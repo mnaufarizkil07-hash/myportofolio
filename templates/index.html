@@ -1,106 +1,473 @@
-{% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&display=swap" rel="stylesheet">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Muhammad Naufal Rizki F. - Portfolio</title>
+    <title>{{name}} — Portfolio</title>
+    
+    <!-- Google Fonts: Space Grotesk & Manrope -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    
+    <!-- External CSS -->
+    {% load static %}
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
+
+    <!-- Background Interactive Canvas (Gelombang & Titik Konstelasi) -->
+    <canvas id="wave-canvas"></canvas>
+
+    <!-- Sticky Navigation Bar -->
     <header class="site-header">
-        <div class="container">
-            <a href="#profile" class="brand">PORTOFOLIO</a>
+        <div class="nav-container">
+            <a href="{% url 'main:show_main' %}" class="brand">{{ name }}</a>
             <nav>
-                <a href="#profile">Profile</a>
+                <a href="{% url 'main:show_main' %}">Profile</a>
+                <a href="{% url 'main:show_experience' %}">Experience</a>
             </nav>
         </div>
     </header>
 
-    <main>
-        <section class="hero" id="profile">
-            <div class="container hero-grid">
-                <div class="hero-details">
-                    <p class="hero-kicker">COMPUTER SINCE &middot; Universitas Indonesia</p>
-                    <h1>Muhammad Naufal Rizki Fadhlurrahman</h1>
-                </div>
-                <div class="hero-photo">
-                    <div class="photo-block"></div>
-                    <img class="avatar" src="{% static 'img/naufal.jpg' %}" alt="Photo of Muhammad Naufal Rizki F.">
-                </div>
-                <div class="hero-details">
-                    <p class="bio">Mahasiswa Fakultas Ilmu Komputer Universitas Indonesia yang antusias dengan pengembangan AI Back-End. Berpengalaman menggunakan Python dan memiliki minat yang mendalam pada keamanan siber, khususnya eksplorasi arsitektur jaringan blue team.</p>
-                    <dl class="meta-list">
-                        <div class="meta-row">
-                            <dt>NPM</dt>
-                            <dd>2506623490</dd>
+    <!-- Main Container -->
+    <main class="main-wrapper">
+
+        <!-- Hero / About Section -->
+        <section id="home" class="hero-section">
+            <div class="hero-card glass-panel">
+                <div class="hero-content">
+                    <span class="faculty-tag">Computer Science • Universitas Indonesia</span>
+                    <h1 class="hero-title">{{name}}</h1>
+                    <p class="hero-bio">
+                        <p class="hero-bio">{{ bio }}</p>
+                    </p>
+                    
+                    <div class="meta-grid">
+                        <div class="meta-item">
+                            <span class="meta-label">NPM</span>
+                            <span class="meta-value">{{npm}}</span>
                         </div>
-                        <div class="meta-row">
-                            <dt>Program</dt>
-                            <dd>S1 Sistem Informasi</dd>
+                        <div class="meta-item">
+                            <span class="meta-label">PROGRAM</span>
+                            <span class="meta-value">{{study_program}}</span>
                         </div>
-                    </dl>
+                    </div>
+
+                    <div class="hero-actions">
+                        <a href="#contact" class="btn btn-primary">Get in Touch</a>
+                        <a href="#" class="btn btn-secondary">Download CV / Resume</a>
+                    </div>
+
                     <div class="social-links">
-                        <a href="LINK_GITHUB_KAMU" class="social-link">GitHub</a>
-                        <a href="LINK_LINKEDIN_KAMU" class="social-link">LinkedIn</a>
-                        <a href="mailto:EMAIL_KAMU" class="social-link">Email</a>
+                        <a href="https://github.com" target="_blank" class="social-link">GitHub</a>
+                        <a href="https://linkedin.com" target="_blank" class="social-link">LinkedIn</a>
+                        <a href="mailto:naufal@ui.ac.id" class="social-link">Email</a>
+                    </div>
+                </div>
+
+                <div class="hero-avatar-wrapper">
+                    <div class="avatar-glow-ring"></div>
+                    <img src="{% static 'img/naufal.jpg' %}" alt="{{name}}" class="hero-avatar">
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section id="projects" class="content-section">
+            <div class="section-header">
+                <h2>Featured Projects</h2>
+                <p>Beberapa proyek pilihan yang pernah saya kembangkan.</p>
+            </div>
+            
+            <div class="projects-grid">
+                <div class="project-card glass-panel">
+                    <div class="project-info">
+                        <h3>AI Back-End Intelligent Pipeline</h3>
+                        <p>Sistem pemrosesan data otomatis menggunakan kerangka kerja Python modern untuk integrasi model kecerdasan buatan.</p>
+                        <div class="project-tech-stack">
+                            <span>Python</span>
+                            <span>AI / ML</span>
+                            <span>Django</span>
+                        </div>
+                        <a href="#" class="project-link">View Repository &rarr;</a>
+                    </div>
+                </div>
+
+                <div class="project-card glass-panel">
+                    <div class="project-info">
+                        <h3>Blue Team Network Monitor</h3>
+                        <p>Simulasi alat pemantauan dan analisis lalu lintas jaringan untuk mendeteksi anomali keamanan secara real-time.</p>
+                        <div class="project-tech-stack">
+                            <span>Cybersecurity</span>
+                            <span>Python</span>
+                            <span>Networking</span>
+                        </div>
+                        <a href="#" class="project-link">View Repository &rarr;</a>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Section Slider Skill dengan Judul -->
-       <!-- Section Slider Skill Bergulir -->
-        <div class="tech-slider-wrapper">
-            <h3 class="tech-slider-title">Technical Skills</h3>
-            <div class="tech-slider-container">
-                <div class="tech-track">
-                    <div class="tech-item"><img src="{% static 'img/python.svg' %}" alt="Python" class="tech-logo"> Python</div>
-                    <div class="tech-item"><img src="{% static 'img/java.svg' %}" alt="Java" class="tech-logo"> Java</div>
-                    <div class="tech-item"><img src="{% static 'img/vscode.svg' %}" alt="VS Code" class="tech-logo"> VS Code</div>
-                    <div class="tech-item"><img src="{% static 'img/javascript.svg' %}" alt="JavaScript" class="tech-logo"> JavaScript</div>
-                    <div class="tech-item"><img src="{% static 'img/html5.svg' %}" alt="HTML" class="tech-logo"> HTML</div>
-                    <div class="tech-item"><img src="{% static 'img/github.svg' %}" alt="GitHub" class="tech-logo"> GitHub</div>
-                    <div class="tech-item"><img src="{% static 'img/amazon.svg' %}" alt="Amazon" class="tech-logo"> Amazon</div>
-                    
-                    <!-- Duplikat untuk infinite loop yang mulus -->
-                    <div class="tech-item"><img src="{% static 'img/python.svg' %}" alt="Python" class="tech-logo"> Python</div>
-                    <div class="tech-item"><img src="{% static 'img/java.svg' %}" alt="Java" class="tech-logo"> Java</div>
-                    <div class="tech-item"><img src="{% static 'img/vscode.svg' %}" alt="VS Code" class="tech-logo"> VS Code</div>
-                    <div class="tech-item"><img src="{% static 'img/javascript.svg' %}" alt="JavaScript" class="tech-logo"> JavaScript</div>
-                    <div class="tech-item"><img src="{% static 'img/html.svg' %}" alt="HTML/CSS" class="tech-logo"> HTML / CSS</div>
-                    <div class="tech-item"><img src="{% static 'img/github.svg' %}" alt="GitHub" class="tech-logo"> GitHub</div>
-                    <div class="tech-item"><img src="{% static 'img/amazon.svg' %}" alt="Amazon" class="tech-logo"> Amazon</div>
+        <!-- Experience & Education Section -->
+        <section id="experience" class="content-section">
+            <div class="section-header">
+                <h2>Experience & Education</h2>
+                <p>Jejak perjalanan akademik dan keterlibatan organisasi.</p>
+            </div>
+
+            <div class="timeline-container glass-panel">
+                <div class="timeline-item">
+                    <span class="timeline-date">2025 — Present</span>
+                    <h4>Fakultas Ilmu Komputer, Universitas Indonesia</h4>
+                    <p>Mahasiswa S1 Sistem Informasi. Aktif dalam kegiatan akademik dan pengembangan perangkat lunak.</p>
+                </div>
+                <div class="timeline-item">
+                    <span class="timeline-date">2026</span>
+                    <h4>COMPFEST & RISTEK UI</h4>
+                    <p>Terlibat dalam penyiapan proposal kolaborasi kelembagaan dan open class khusus pengembangan teknologi.</p>
                 </div>
             </div>
+        </section>
+
+        <!-- Technical Skills Section (Animated Infinite Marquee) -->
+    <!-- Technical Skills Section (Horizontal Infinite Marquee) -->
+    <section id="skills" class="content-section skills-marquee-section">
+        <div class="section-header" style="text-align: center;">
+            <h2>Technical Skills & Stack</h2>
+            <p>Perangkat, bahasa, dan teknologi canggih yang digunakan dalam pengembangan.</p>
         </div>
-        <section id="experience" class="experience-section">
-            <h2>Experience & Skills</h2>
-            <div class="card-container">
-                <article class="card">
-                    <h3>AI Back-End Developer</h3>
-                    <p>Spesialisasi teknologi digital IDCamp untuk pengembangan arsitektur back-end berbasis Artificial Intelligence.</p>
-                </article>
-                <article class="card">
-                    <h3>Technical Skills</h3>
-                    <p>Python, Object-Oriented Programming (OOP), serta perancangan sirkuit pada struktur logika digital.</p>
-                </article>
-                <article class="card">
-                    <h3>Event & Organization</h3>
-                    <p>Terlibat aktif dalam kolaborasi partnership COMPFEST serta partisipasi kelas terbuka Pekan RISTEK.</p>
-                </article>
+
+        <div class="marquee-container">
+            <div class="marquee-track">
+                <!-- Set Pertama -->
+                <div class="skill-badge"><img src="{% static 'img/python.svg' %}" alt="Python" class="skill-icon"><span>Python</span></div>
+                <div class="skill-badge"><img src="{% static 'img/javascript.svg' %}" alt="JavaScript" class="skill-icon"><span>JavaScript</span></div>
+                <div class="skill-badge"><img src="{% static 'img/html5.svg' %}" alt="HTML" class="skill-icon"><span>HTML / CSS</span></div>
+                <div class="skill-badge"><img src="{% static 'img/github.svg' %}" alt="GitHub" class="skill-icon"><span>GitHub</span></div>
+                <div class="skill-badge"><img src="{% static 'img/amazon.svg' %}" alt="AWS" class="skill-icon"><span>AWS Cloud</span></div>
+                <div class="skill-badge"><img src="{% static 'img/java.svg' %}" alt="Java" class="skill-icon"><span>Java / OOP</span></div>
+                <div class="skill-badge"><img src="{% static 'img/ubuntu.svg' %}" alt="Ubuntu" class="skill-icon"><span>Ubuntu</span></div>
+                <div class="skill-badge"><img src="{% static 'img/kalilinux.svg' %}" alt="Kali Linux" class="skill-icon"><span>Kali Linux</span></div>
+                <div class="skill-badge"><img src="{% static 'img/docker.svg' %}" alt="Docker" class="skill-icon"><span>Docker</span></div>
+                <div class="skill-badge"><img src="{% static 'img/pytorch.svg' %}" alt="PyTorch" class="skill-icon"><span>PyTorch / AI</span></div>
+
+                <!-- Set Kedua (Duplikat agar infinite loop menyatu sempurna) -->
+                <div class="skill-badge"><img src="{% static 'img/python.svg' %}" alt="Python" class="skill-icon"><span>Python</span></div>
+                <div class="skill-badge"><img src="{% static 'img/javascript.svg' %}" alt="JavaScript" class="skill-icon"><span>JavaScript</span></div>
+                <div class="skill-badge"><img src="{% static 'img/html5.svg' %}" alt="HTML" class="skill-icon"><span>HTML / CSS</span></div>
+                <div class="skill-badge"><img src="{% static 'img/github.svg' %}" alt="GitHub" class="skill-icon"><span>GitHub</span></div>
+                <div class="skill-badge"><img src="{% static 'img/amazon.svg' %}" alt="AWS" class="skill-icon"><span>AWS Cloud</span></div>
+                <div class="skill-badge"><img src="{% static 'img/java.svg' %}" alt="Java" class="skill-icon"><span>Java / OOP</span></div>
+                <div class="skill-badge"><img src="{% static 'img/ubuntu.svg' %}" alt="Ubuntu" class="skill-icon"><span>Ubuntu</span></div>
+                <div class="skill-badge"><img src="{% static 'img/kalilinux.svg' %}" alt="Kali Linux" class="skill-icon"><span>Kali Linux</span></div>
+                <div class="skill-badge"><img src="{% static 'img/docker.svg' %}" alt="Docker" class="skill-icon"><span>Docker</span></div>
+                <div class="skill-badge"><img src="{% static 'img/pytorch.svg' %}" alt="PyTorch" class="skill-icon"><span>PyTorch / AI</span></div>
+            </div>
+        </div>
+    </section>
+        <!-- Contact Section -->
+        <section id="contact" class="content-section">
+            <div class="contact-card glass-panel">
+                <div class="section-header" style="margin-bottom: 1.5rem;">
+                    <h2>Let's Connect</h2>
+                    <p>Tertarik untuk berkolaborasi atau berdiskusi seputar AI & Cybersecurity? Jangan ragu untuk menghubungi saya.</p>
+                </div>
+                <form class="contact-form" onsubmit="event.preventDefault(); alert('Pesan berhasil disimulasikan terkirim!');">
+                    <div class="form-group">
+                        <input type="text" placeholder="Nama Anda" required class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <input type="email" placeholder="Email Anda" required class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <textarea placeholder="Pesan atau topik diskusi..." rows="4" required class="form-input"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">Kirim Pesan</button>
+                </form>
             </div>
         </section>
+
     </main>
 
+    <!-- Footer -->
     <footer class="site-footer">
-        <div class="container">
-            <p>&copy; 2026 Muhammad Naufal Rizki F., Fakultas Ilmu Komputer, Universitas Indonesia.</p>
-        </div>
+        <p>&copy; 2026 {{ name }}. Fakultas Ilmu Komputer, Universitas Indonesia.</p>
     </footer>
+
+    <!-- Script Background Interaktif (Gelombang + Nodes Network) -->
+    <script>
+      const canvas = document.getElementById('wave-canvas');
+      const ctx = canvas.getContext('2d');
+
+      let width, height;
+      const particles = [];
+      let mouse = { x: null, y: null };
+
+      function initCanvas() {
+          width = canvas.width = window.innerWidth;
+          height = canvas.height = window.innerHeight;
+          
+          particles.length = 0;
+          const particleCount = Math.floor((width * height) / 15000);
+          for (let i = 0; i < particleCount; i++) {
+              particles.push({
+                  x: Math.random() * width,
+                  y: Math.random() * height,
+                  vx: (Math.random() - 0.5) * 0.6,
+                  vy: (Math.random() - 0.5) * 0.6,
+                  radius: Math.random() * 2 + 1
+              });
+          }
+      }
+
+      window.addEventListener('resize', initCanvas);
+      initCanvas();
+
+      window.addEventListener('mousemove', (e) => {
+          mouse.x = e.clientX;
+          mouse.y = e.clientY;
+      });
+
+      window.addEventListener('mouseleave', () => {
+          mouse.x = null;
+          mouse.y = null;
+      });
+
+      let step = 0;
+      function drawScene() {
+          // 1. Background Gradasi Dinamis Bergeser (Biru ke Ungu Nebula)
+          let gradient = ctx.createLinearGradient(0, 0, width, height);
+          let t = step * 0.02;
+          let r = Math.floor(25 + Math.sin(t) * 15);
+          let g = Math.floor(53 + Math.cos(t) * 15);
+          let b = Math.floor(100 + Math.sin(t) * 60);
+
+          gradient.addColorStop(0, '#122D70');
+          gradient.addColorStop(0.5, `rgb(${r}, ${g}, ${b})`);
+          gradient.addColorStop(1, '#5C58ED');
+
+          ctx.fillStyle = gradient;
+          ctx.fillRect(0, 0, width, height);
+
+          // 2. Pola Konstelasi Titik & Garis Interaktif
+          ctx.strokeStyle = 'rgba(86, 225, 232, 0.15)';
+          ctx.fillStyle = 'rgba(86, 225, 232, 0.5)';
+
+          for (let i = 0; i < particles.length; i++) {
+              let p = particles[i];
+              p.x += p.vx;
+              p.y += p.vy;
+
+              if (p.x < 0 || p.x > width) p.vx *= -1;
+              if (p.y < 0 || p.y > height) p.vy *= -1;
+
+              if (mouse.x !== null && mouse.y !== null) {
+                  let mdx = mouse.x - p.x;
+                  let mdy = mouse.y - p.y;
+                  let mdist = Math.sqrt(mdx * mdx + mdy * mdy);
+                  if (mdist < 140) {
+                      p.x += mdx * 0.015;
+                      p.y += mdy * 0.015;
+                  }
+              }
+
+              ctx.beginPath();
+              ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+              ctx.fill();
+
+              for (let j = i + 1; j < particles.length; j++) {
+                  let p2 = particles[j];
+                  let dx = p.x - p2.x;
+                  let dy = p.y - p2.y;
+                  let dist = Math.sqrt(dx * dx + dy * dy);
+
+                  if (dist < 110) {
+                      ctx.beginPath();
+                      ctx.moveTo(p.x, p.y);
+                      ctx.lineTo(p2.x, p2.y);
+                      ctx.lineWidth = 0.6;
+                      ctx.stroke();
+                  }
+              }
+          }
+
+          // 3. Gelombang Neon 4 Warna di Depan
+          drawWaveLayer(step, 0.012, 60, 'rgba(63, 169, 245, 0.85)', 3);       // #3FA9F5
+          drawWaveLayer(step + 10, 0.018, 75, 'rgba(86, 225, 232, 0.9)', 2.5); // #56E1E8
+          drawWaveLayer(step + 20, 0.015, 65, 'rgba(92, 88, 237, 0.85)', 3);   // #5C58ED
+          drawWaveLayer(step + 30, 0.008, 90, 'rgba(18, 45, 112, 0.75)', 3.5);  // #122D70
+
+          step += 0.02;
+          requestAnimationFrame(drawScene);
+      }
+
+      function drawWaveLayer(offset, frequency, amplitude, color, lineWidth) {
+          ctx.beginPath();
+          ctx.lineWidth = lineWidth;
+          ctx.strokeStyle = color;
+          ctx.shadowBlur = 12;
+          ctx.shadowColor = color;
+
+          for (let x = 0; x < width; x += 12) {
+              let y = height / 2 + Math.sin(x * frequency + offset) * amplitude + Math.cos(x * 0.004 + offset * 0.4) * 30;
+              if (x === 0) {
+                  ctx.moveTo(x, y);
+              } else {
+                  ctx.lineTo(x, y);
+              }
+          }
+          ctx.stroke();
+      }
+
+      drawScene();
+    </script>
 </body>
+</html>
+</body>
+<script>
+  const canvas = document.getElementById('wave-canvas');
+  const ctx = canvas.getContext('2d');
+
+  let width, height;
+  const particles = [];
+
+  // Posisi interaksi mouse/klik
+  let mouse = { x: null, y: null, active: false };
+
+  function initCanvas() {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+      
+      particles.length = 0;
+      const particleCount = Math.floor((width * height) / 14000);
+      for (let i = 0; i < particleCount; i++) {
+          particles.push({
+              x: Math.random() * width,
+              y: Math.random() * height,
+              vx: (Math.random() - 0.5) * 0.8,
+              vy: (Math.random() - 0.5) * 0.8,
+              radius: Math.random() * 2 + 1.2
+          });
+      }
+  }
+
+  window.addEventListener('resize', initCanvas);
+  initCanvas();
+
+  // Merekam posisi kursor mouse
+  window.addEventListener('mousemove', (e) => {
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
+  });
+
+  window.addEventListener('mouseleave', () => {
+      mouse.x = null;
+      mouse.y = null;
+  });
+
+  // Efek saat layar diklik (Partikel langsung menyebar menjauh / meledak pelan)
+  window.addEventListener('click', (e) => {
+      particles.forEach(p => {
+          let dx = p.x - e.clientX;
+          let dy = p.y - e.clientY;
+          let dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 250) {
+              p.vx += dx * 0.05; // Mendorong partikel menjauh dari titik klik
+              p.vy += dy * 0.05;
+          }
+      });
+  });
+
+  let step = 0;
+  function drawWaves() {
+      // 1. Render Background Gradasi Dinamis Bergeser
+      let gradient = ctx.createLinearGradient(0, 0, width, height);
+      let t = step * 0.03;
+      let r = Math.floor(25 + Math.sin(t) * 20);
+      let g = Math.floor(53 + Math.cos(t) * 20);
+      let b = Math.floor(100 + Math.sin(t) * 80);
+
+      gradient.addColorStop(0, '#193546');
+      gradient.addColorStop(0.5, `rgb(${r}, ${g}, ${b})`);
+      gradient.addColorStop(1, '#7548D2');
+
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, width, height);
+
+      // 2. Render Pola Jaringan Titik & Garis Interaktif dengan Mouse
+      ctx.strokeStyle = 'rgba(100, 255, 218, 0.18)';
+      ctx.fillStyle = 'rgba(100, 255, 218, 0.6)';
+
+      for (let i = 0; i < particles.length; i++) {
+          let p = particles[i];
+          p.x += p.vx;
+          p.y += p.vy;
+
+          // Batas pantul layar
+          if (p.x < 0 || p.x > width) p.vx *= -1;
+          if (p.y < 0 || p.y > height) p.vy *= -1;
+
+          // Interaksi mendekat/menjauh secara halus ke kursor mouse
+          if (mouse.x !== null && mouse.y !== null) {
+              let mdx = mouse.x - p.x;
+              let mdy = mouse.y - p.y;
+              let mdist = Math.sqrt(mdx * mdx + mdy * mdy);
+              if (mdist < 150) {
+                  // Jika kursor mendekat, titik-titik ditarik halus mendekati kursor (atau ganti minus (-) jika mau menjauh)
+                  p.x += mdx * 0.02;
+                  p.y += mdy * 0.02;
+              }
+          }
+
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+          ctx.fill();
+
+          for (let j = i + 1; j < particles.length; j++) {
+              let p2 = particles[j];
+              let dx = p.x - p2.x;
+              let dy = p.y - p2.y;
+              let dist = Math.sqrt(dx * dx + dy * dy);
+
+              if (dist < 120) {
+                  ctx.beginPath();
+                  ctx.moveTo(p.x, p.y);
+                  ctx.lineTo(p2.x, p2.y);
+                  ctx.lineWidth = 0.7;
+                  ctx.stroke();
+              }
+          }
+      }
+
+      // 3. Render 4 Gelombang Neon Menyala di Depannya
+      drawWaveLayer(step, 0.012, 60, 'rgba(63, 169, 245, 0.85)', 3);       // #3FA9F5
+      drawWaveLayer(step + 10, 0.018, 80, 'rgba(86, 225, 232, 0.9)', 2.5); // #56E1E8
+      drawWaveLayer(step + 20, 0.015, 70, 'rgba(117, 72, 210, 0.85)', 3);  // #5C58ED
+      drawWaveLayer(step + 30, 0.008, 100, 'rgba(30, 144, 255, 0.75)', 3.5); // #122D70
+
+      step += 0.02;
+      requestAnimationFrame(drawWaves);
+  }
+
+  function drawWaveLayer(offset, frequency, amplitude, color, lineWidth) {
+      ctx.beginPath();
+      ctx.lineWidth = lineWidth;
+      ctx.strokeStyle = color;
+      ctx.shadowBlur = 15;
+      ctx.shadowColor = color;
+
+      for (let x = 0; x < width; x += 10) {
+          let y = height / 2 + Math.sin(x * frequency + offset) * amplitude + Math.cos(x * 0.004 + offset * 0.4) * 35;
+          if (x === 0) {
+              ctx.moveTo(x, y);
+          } else {
+              ctx.lineTo(x, y);
+          }
+      }
+      ctx.stroke();
+  }
+
+  drawWaves();
+</script>
 </html>

@@ -1,886 +1,656 @@
+/* ==========================================================
+   1. RESET & VARIABLES (Arctic Depths Theme)
+   ================================================---------- */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-:root {
-    --ink: #1c1917;
-    --paper: #faf6f0;
-    --accent: #d95d39;
-    --accent-dark: #a8442a;
-    --line: #e3d9c9;
-    --text-muted: #6b6459;
-    --radius: 8px;
+html {
+    scroll-behavior: smooth;
 }
 
-
-
-/* Biarkan sisa kode body::before dan @keyframes twinkle yang tadi tetap ada di bawah sini! */
-/* Kode itu yang akan membuat efek bintang berkedip di atas gambar galaksimu */
-h1, .brand {
-    font-family: "Space Grotesk", -apple-system, sans-serif;
+body {
+    font-family: 'Manrope', sans-serif;
+    background-color: #0b192c;
+    color: #f8fafc;
+    overflow-x: hidden;
+    min-height: 100vh;
+    position: relative;
 }
 
-.container {
-    max-width: 960px;
-    margin: 0 auto;
-    padding: 0 1.5rem;
+/* Background Interactive Canvas */
+#wave-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+    pointer-events: none;
 }
 
-/* --- Bagian Header --- */
+/* Blueprint Grid Overlay */
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        linear-gradient(to right, rgba(86, 225, 232, 0.04) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(86, 225, 232, 0.04) 1px, transparent 1px);
+    background-size: 40px 40px;
+    z-index: -1;
+    pointer-events: none;
+}
+
+/* Glassmorphism Panel Standard */
+.glass-panel {
+    background: rgba(15, 28, 51, 0.55);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(86, 225, 232, 0.15);
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+/* ==========================================================
+   2. STICKY NAVIGATION BAR
+   ================================================---------- */
 .site-header {
-    border-bottom: 1px solid var(--line);
-    background-color: #ffffff;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background: rgba(11, 25, 44, 0.8);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(86, 225, 232, 0.1);
+    padding: 1rem 2rem;
 }
 
-.site-header .container {
+.nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1.25rem 1.5rem;
 }
 
 .brand {
-    font-size: 1.5rem;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.35rem;
     font-weight: 700;
-    color: var(--ink);
+    color: #ffffff;
     text-decoration: none;
+    letter-spacing: -0.5px;
+    text-transform: uppercase;
 }
 
-.site-header nav {
+.nav-links {
     display: flex;
+    align-items: center;
     gap: 2rem;
 }
 
-.site-header nav a {
-    color: var(--ink);
+.nav-item {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #94a3b8;
     text-decoration: none;
-    font-weight: 500;
+    transition: color 0.2s ease;
 }
 
-.site-header nav a:hover {
-    color: var(--accent);
+.nav-item:hover, .nav-item.active {
+    color: #56E1E8;
 }
 
-/* --- Bagian Konten Utama (Hero) --- */
-.hero {
-    padding: 4rem 0;
+.btn-contact-nav {
+    background: rgba(86, 225, 232, 0.1);
+    border: 1px solid rgba(86, 225, 232, 0.3);
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    color: #56E1E8 !important;
+    transition: all 0.2s ease;
 }
 
-.hero-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 3rem;
+.btn-contact-nav:hover {
+    background: rgba(86, 225, 232, 0.2);
+    box-shadow: 0 0 12px rgba(86, 225, 232, 0.3);
 }
 
-@media (min-width: 768px) {
-    .hero-grid {
-        grid-template-columns: 2fr 1fr;
-        align-items: center;
-    }
-}
-
-.hero-kicker {
-    color: var(--accent);
-    font-weight: 600;
-    margin-bottom: 0.5rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    font-size: 0.9rem;
-}
-
-h1 {
-    font-size: 2.8rem;
-    margin-bottom: 1.5rem;
-    line-height: 1.2;
-}
-
-.bio {
-    font-size: 1.15rem;
-    margin-bottom: 2rem;
-    color: #444;
-}
-
-/* --- Bagian Foto --- */
-.hero-photo {
-    position: relative;
+/* ==========================================================
+   3. MAIN LAYOUT & SECTIONS
+   ================================================---------- */
+.main-wrapper {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 3rem 1.5rem;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    gap: 4rem;
 }
 
-.avatar {
+.content-section {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.section-header h2 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(1.8rem, 3vw, 2.4rem);
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: -0.5px;
+}
+
+.section-header p {
+    font-size: 1rem;
+    color: #94a3b8;
+}
+
+/* ==========================================================
+   4. HERO / ABOUT SECTION
+   ================================================---------- */
+.hero-section {
     width: 100%;
-    max-width: 280px;
-    border-radius: var(--radius);
-    box-shadow: 8px 8px 0 var(--accent);
-    object-fit: cover;
-    aspect-ratio: 1 / 1;
 }
 
-/* --- Bagian Data Diri & Links --- */
-.meta-list {
-    margin-bottom: 2rem;
-    background-color: #ffffff;
-    padding: 1.5rem;
-    border-radius: var(--radius);
-    border: 1px solid var(--line);
+.hero-card {
+    padding: 3rem;
+    display: grid;
+    grid-template-columns: 1.3fr 0.7fr;
+    gap: 3rem;
+    align-items: center;
 }
 
-.meta-row {
+.hero-content {
     display: flex;
-    margin-bottom: 0.75rem;
+    flex-direction: column;
+    gap: 1.25rem;
 }
 
-.meta-row:last-child {
-    margin-bottom: 0;
-}
-
-.meta-row dt {
-    width: 120px;
-    font-weight: 600;
-    color: var(--text-muted);
-}
-
-.meta-row dd {
+.faculty-tag {
+    font-family: 'Space Grotesk', monospace;
+    font-size: 0.85rem;
     font-weight: 500;
+    color: #56E1E8;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.hero-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(2rem, 3.5vw, 2.8rem);
+    font-weight: 700;
+    line-height: 1.15;
+    color: #ffffff;
+}
+
+.hero-bio {
+    font-size: 1.05rem;
+    line-height: 1.6;
+    color: #cbd5e1;
+}
+
+.meta-grid {
+    display: flex;
+    gap: 2rem;
+    padding: 1rem 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.meta-label {
+    font-family: monospace;
+    font-size: 0.75rem;
+    color: #64748b;
+    letter-spacing: 0.5px;
+}
+
+.meta-value {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #56E1E8;
+}
+
+.hero-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.btn {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: all 0.25s ease;
+    cursor: pointer;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #3FA9F5, #5C58ED);
+    color: #ffffff;
+    border: none;
+    box-shadow: 0 4px 15px rgba(92, 88, 237, 0.4);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(92, 88, 237, 0.6);
+}
+
+.btn-secondary {
+    background: transparent;
+    color: #ffffff;
+    border: 1px solid rgba(86, 225, 232, 0.4);
+}
+
+.btn-secondary:hover {
+    background: rgba(86, 225, 232, 0.08);
+    border-color: #56E1E8;
 }
 
 .social-links {
     display: flex;
     gap: 1.5rem;
+    margin-top: 0.5rem;
 }
 
 .social-link {
-    color: var(--accent);
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #94a3b8;
     text-decoration: none;
-    font-weight: 600;
-    border-bottom: 2px solid transparent;
-    padding-bottom: 2px;
-    transition: all 0.2s ease;
+    transition: color 0.2s;
 }
 
 .social-link:hover {
-    color: var(--accent-dark);
-    border-bottom: 2px solid var(--accent-dark);
+    color: #56E1E8;
 }
 
-/* --- Bagian Footer --- */
+/* Avatar Styling */
+.hero-avatar-wrapper {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.avatar-glow-ring {
+    position: absolute;
+    width: 230px;
+    height: 230px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #3FA9F5, #7548D2);
+    filter: blur(20px);
+    opacity: 0.6;
+    animation: pulseGlow 4s ease-in-out infinite alternate;
+}
+
+@keyframes pulseGlow {
+    0% { transform: scale(0.95); opacity: 0.4; }
+    100% { transform: scale(1.05); opacity: 0.8; }
+}
+
+.hero-avatar {
+    width: 210px;
+    height: 210px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid rgba(86, 225, 232, 0.6);
+    position: relative;
+    z-index: 2;
+}
+
+/* ==========================================================
+   5. PROJECTS SECTION
+   ================================================---------- */
+.projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.project-card {
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.25s ease, border-color 0.25s ease;
+}
+
+.project-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(86, 225, 232, 0.4);
+}
+
+.project-info {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.project-info h3 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.3rem;
+    color: #ffffff;
+}
+
+.project-info p {
+    font-size: 0.95rem;
+    color: #94a3b8;
+    line-height: 1.5;
+}
+
+.project-tech-stack {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-top: 0.5rem;
+}
+
+.project-tech-stack span {
+    font-family: monospace;
+    font-size: 0.75rem;
+    background: rgba(86, 225, 232, 0.1);
+    color: #56E1E8;
+    padding: 0.25rem 0.6rem;
+    border-radius: 6px;
+}
+
+.project-link {
+    margin-top: 1rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #3FA9F5;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.project-link:hover {
+    color: #56E1E8;
+}
+
+/* ==========================================================
+   6. EXPERIENCE & EDUCATION TIMELINE
+   ================================================---------- */
+.timeline-container {
+    padding: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.timeline-item {
+    position: relative;
+    padding-left: 1.5rem;
+    border-left: 2px solid rgba(86, 225, 232, 0.3);
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.timeline-date {
+    font-family: monospace;
+    font-size: 0.8rem;
+    color: #56E1E8;
+}
+
+.timeline-item h4 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.15rem;
+    color: #ffffff;
+}
+
+.timeline-item p {
+    font-size: 0.95rem;
+    color: #94a3b8;
+}
+
+/* ==========================================================
+   7. TECHNICAL SKILLS SECTION
+   ================================================---------- */
+.skills-grid {
+    padding: 2rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 1rem;
+}
+
+.skill-badge {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    background: rgba(11, 25, 44, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 0.85rem 1rem;
+    border-radius: 10px;
+    transition: all 0.2s ease;
+}
+
+.skill-badge:hover {
+    border-color: #56E1E8;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(86, 225, 232, 0.15);
+}
+
+.skill-icon {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+}
+
+.skill-badge span {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #e2e8f0;
+}
+
+/* ==========================================================
+   8. CONTACT SECTION
+   ================================================---------- */
+.contact-card {
+    padding: 2.5rem;
+    max-width: 700px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+
+.form-input {
+    width: 100%;
+    background: rgba(11, 25, 44, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 0.85rem 1rem;
+    font-family: 'Manrope', sans-serif;
+    font-size: 0.95rem;
+    color: #ffffff;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.form-input:focus {
+    border-color: #56E1E8;
+}
+
+.form-input::placeholder {
+    color: #64748b;
+}
+
+/* ==========================================================
+   9. FOOTER & RESPONSIVE BREAKPOINTS
+   ================================================---------- */
 .site-footer {
     text-align: center;
-    padding: 2rem 0;
-    color: var(--text-muted);
-    font-size: 0.9rem;
-    border-top: 1px solid var(--line);
+    padding: 2.5rem 1rem;
+    font-size: 0.85rem;
+    color: #64748b;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
     margin-top: 2rem;
 }
 
-.experience-section {
-    padding: 4rem 2rem;
-    background-color: #f4f7f6;
-    margin-top: 2rem;
-}
+@media (max-width: 768px) {
+    .hero-card {
+        grid-template-columns: 1fr;
+        text-align: center;
+        padding: 2rem 1.5rem;
+    }
 
-.experience-section h2 {
-    text-align: center;
-    margin-bottom: 2rem;
-    color: #333;
-}
-
-/* Menggunakan Flexbox untuk memposisikan card */
-.card-container {
-    display: flex;
-    flex-wrap: wrap; /* Memastikan item turun ke bawah jika layar sempit */
-    gap: 20px;
-    justify-content: center;
-}
-
-/* Desain item / card */
-.card {
-    background-color: #ffffff;
-    border: 1px solid #eaeaea;
-    border-radius: 10px;
-    padding: 25px;
-    width: 100%;
-    max-width: 300px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-    /* Efek transisi halus untuk animasi hover */
-    transition: transform 0.3s ease, box-shadow 0.3s ease; 
-}
-
-.card h3 {
-    color: #2c3e50;
-    margin-top: 0;
-    font-size: 1.2rem;
-}
-
-.card p {
-    color: #555;
-    line-height: 1.6;
-    font-size: 0.95rem;
-}
-
-/* Efek Interaktif (Syarat Rubrik Kualitas Kode Skor 4) */
-.card:hover {
-    transform: translateY(-8px) scale(1.02); /* Kartu sedikit melayang dan membesar */
-    box-shadow: 0 12px 20px rgba(0,0,0,0.12); /* Bayangan lebih pekat */
-}
-
-/* Responsivitas Mobile (Syarat Rubrik Kualitas Kode) */
-@media screen and (max-width: 768px) {
-    .card-container {
-        flex-direction: column;
+    .hero-content {
         align-items: center;
+    }
+
+    .meta-grid {
+        justify-content: center;
+    }
+
+    .hero-actions {
+        justify-content: center;
+    }
+
+    .nav-links {
+        display: none; /* Bisa dikembangkan jadi mobile drawer jika diperlukan */
+    }
+}
+/* ==========================================================
+   TECHNICAL SKILLS - HORIZONTAL INFINITE MARQUEE
+   ================================================---------- */
+.skills-marquee-section {
+    overflow: hidden;
+    width: 100%;
+}
+
+.marquee-container {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+    mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+    padding: 1rem 0;
+}
+
+.marquee-track {
+    display: flex;
+    flex-direction: row; /* Memastikan badge berjejer menyamping */
+    gap: 1.25rem;
+    width: max-content;
+    animation: scrollMarquee 25s linear infinite;
+}
+
+.marquee-track:hover {
+    animation-play-state: paused;
+}
+
+@keyframes scrollMarquee {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-50%);
     }
 }
 
-/* =========================================
-   TEMA GALAXY & BINTANG KEDIP
-   ========================================= */
-/* =========================================
-   TEMA ANIMASI GALAXY & BINTANG JATUH
-   ========================================= */
-body {
-    /* Racikan warna galaksi yang lebih hidup, terang, dan berwarna */
-    background: linear-gradient(135deg, #1b033a, #3a0ca3, #4361ee, #7209b7, #b5179e);
-    background-size: 400% 400%;
-    animation: galaxyMove 10s ease infinite;
-    color: #e0e0e0;
-    position: relative;
-    z-index: 1;
-    overflow-x: hidden;
-}
-/* Animasi bergeraknya latar galaxy */
-@keyframes galaxyMove {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-}
-
-/* Animasi Bintang Kelap-Kelip */
-body::before {
-    content: "";
-    position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
-    z-index: -2;
-    background-image: 
-        radial-gradient(2px 2px at 40px 60px, #ffffff, rgba(0,0,0,0)),
-        radial-gradient(2px 2px at 150px 120px, #ffffff, rgba(0,0,0,0)),
-        radial-gradient(2px 2px at 300px 30px, #e0e0e0, rgba(0,0,0,0)),
-        radial-gradient(2px 2px at 450px 200px, #ffffff, rgba(0,0,0,0)),
-        radial-gradient(3px 3px at 70% 30%, #ffffff, rgba(0,0,0,0)),
-        radial-gradient(2px 2px at 85% 60%, #e0e0e0, rgba(0,0,0,0));
-    background-repeat: repeat;
-    background-size: 400px 400px;
-    animation: twinkle 4s infinite alternate;
-}
-
-@keyframes twinkle {
-    0% { opacity: 0.3; }
-    100% { opacity: 1; transform: scale(1.05); }
-}
-
-/* Animasi Bintang Jatuh (Shooting Star) */
-body::after {
-    content: "";
-    position: fixed;
-    top: 10%; /* Posisi awal muncul dari atas */
-    right: 5%; /* Muncul dari sisi kanan */
-    width: 150px; /* Panjang ekor bintang */
-    height: 2px;
-    background: linear-gradient(to left, rgba(255,255,255,0), #ffffff);
-    box-shadow: 0 0 10px #ffffff, 0 0 20px #ffffff;
-    border-radius: 50%;
-    z-index: -1;
-    animation: shootingStar 6s infinite linear;
-    opacity: 0;
-}
-
-/* Lintasan dan timing bintang jatuh */
-@keyframes shootingStar {
-    0% { transform: rotate(-45deg) translateX(200px); opacity: 1; }
-    15% { transform: rotate(-45deg) translateX(-1500px); opacity: 0; }
-    100% { transform: rotate(-45deg) translateX(-1500px); opacity: 0; }
-}
-
-/* Animasi pergerakan gradien galaxy */
-@keyframes galaxyMove {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-}
-
-/* Membuat bintang berkedip murni CSS */
-body::before {
-    content: "";
-    position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
-    z-index: -1;
-    background-image: 
-        radial-gradient(2px 2px at 20px 30px, #ffffff, rgba(0,0,0,0)),
-        radial-gradient(2px 2px at 90px 70px, #ffffff, rgba(0,0,0,0)),
-        radial-gradient(2px 2px at 150px 160px, #e0e0e0, rgba(0,0,0,0)),
-        radial-gradient(2px 2px at 250px 50px, #ffffff, rgba(0,0,0,0)),
-        radial-gradient(2px 2px at 300px 120px, #e0e0e0, rgba(0,0,0,0));
-    background-repeat: repeat;
-    background-size: 350px 350px;
-    animation: twinkle 3s infinite alternate;
-}
-
-@keyframes twinkle {
-    0% { opacity: 0.2; transform: scale(0.9); }
-    100% { opacity: 1; transform: scale(1.1); }
-}
-
-/* =========================================
-   PENYESUAIAN KARTU (GLASSMORPHISM)
-   ========================================= */
-.experience-section {
-    background-color: transparent !important; /* Hapus warna latar lama */
-}
-
-.experience-section h2 {
-    color: #ffffff !important; /* Judul putih agar kontras */
-}
-
-.card {
-    background-color: rgba(255, 255, 255, 0.08) !important; /* Efek kaca semi-transparan */
-    backdrop-filter: blur(10px); /* Efek blur di belakang kartu */
-    border: 1px solid rgba(255, 255, 255, 0.2) !important;
-    color: #ffffff;
-}
-
-.card h3 {
-    color: #64ffda !important; /* Warna aksen cyan/neon untuk judul kartu */
-}
-
-.card p {
-    color: #d1d5db !important;
-}
-
-/* Pastikan warna teks di area profil utama juga terang */
-.hero-details p, .hero-details dd, .hero-kicker {
-    color: #e0e0e0 !important;
-}
-.hero-identity h1 {
-    color: #ffffff !important;
-}
-
-/* =========================================
-   FIX KOTAK PROFIL & NPM TRANSPARAN
-   ========================================= */
-
-/* 1. Kotak NPM & Program jadi Transparan */
-.meta-list {
-    background-color: rgba(255, 255, 255, 0.08) !important;
-    backdrop-filter: blur(10px) !important;
-    -webkit-backdrop-filter: blur(10px) !important;
-    border: 1px solid rgba(255, 255, 255, 0.2) !important;
-    border-radius: 10px !important;
-    color: #ffffff !important;
-}
-.meta-row dt {
-    color: #4361ee !important; 
-}
-.meta-row dd {
-    color: #e0e0e0 !important;
-}
-
-/* 2. Header & Navigasi Transparan */
-.site-header {
-    background-color: rgba(27, 3, 58, 0.6) !important;
-    backdrop-filter: blur(15px) !important;
-    -webkit-backdrop-filter: blur(15px) !important;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
-}
-.site-header a, .site-header .brand {
-    color: #ffffff !important;
-}
-
-
-/* =========================================
-   KILL ORANGE BORDER ULTIMATE
-   ========================================= */
-.photo-block {
-    background: transparent !important;
-    border: none !important;
-    box-shadow: none !important;
-}
-
-/* Sembunyikan elemen oranye aslinya */
-.photo-block::before {
-    display: none !important;
-}
-
-/* Pakaikan border dan glow ungu-biru langsung ke foto aslinya */
-.photo-block img, .avatar {
-    border: 3px solid #7209b7 !important;
-    border-radius: 12px !important;
-    box-shadow: 0 0 25px rgba(114, 9, 183, 0.8), 0 0 50px rgba(67, 97, 238, 0.5) !important;
-}
-
-/* =========================================
-   FIX KONTRAS TEKS NPM & WARNA LINK ORANYE
-   ========================================= */
-
-/* 1. Bikin teks NPM & Isinya jadi sangat kontras dan jelas */
-.meta-row dt {
-    color: #ffffff !important;
-    font-weight: 600 !important;
-}
-.meta-row dd {
-    color: #e0e0e0 !important;
-    font-weight: 500 !important;
-}
-
-/* 2. Ubah warna teks link (GitHub, LinkedIn, Email) dari oranye jadi ungu neon */
-.social-links a, 
-.footer-links a,
-a[href*="github"], 
-a[href*="linkedin"], 
-a[href*="mailto"],
-.actions a {
-    color: #BC92CD !important;
-    transition: 0.3s ease;
-}
-
-/* Efek saat link disentuh kursor mouse */
-.social-links a:hover, 
-.footer-links a:hover,
-.actions a:hover {
-    color: #ffffff !important;
-    text-shadow: 0 0 10px rgba(188, 146, 205, 0.8);
-}
-/* =========================================
-   UBAH POSISI NPM & DATA JADI KESAMPING (FLEXBOX)
-   ========================================= */
-.meta-list {
-    display: flex !important;
-    flex-direction: column !important;
-    gap: 12px !important;
-}
-
-.meta-row {
-    display: flex !important;
-    justify-content: space-between !important;
-    align-items: center !important;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
-    padding-bottom: 8px !important;
-}
-
-.meta-row:last-child {
-    border-bottom: none !important;
-    padding-bottom: 0 !important;
-}
-
-/* Biar teks label (kiri) dan isi (kanan) posisinya pas */
-.meta-row dt {
-    color: #ffffff !important;
-    font-weight: 600 !important;
-    margin: 0 !important;
-}
-
-.meta-row dd {
-    color: #e0e0e0 !important;
-    font-weight: 500 !important;
-    margin: 0 !important;
-    text-align: right !important;
-}
-/* =========================================
-   PERBAIKAN FINAL: KONTRAS NPM, LINK & POSISI
-   ========================================= */
-
-/* 1. Paksa teks NPM & nilainya jadi sangat kontras dan terang */
-.meta-list {
-    background-color: rgba(11, 19, 43, 0.5) !important;
-    backdrop-filter: blur(12px) !important;
-    border: 1px solid rgba(255, 255, 255, 0.2) !important;
-}
-
-.meta-row {
-    display: flex !important;
-    justify-content: space-between !important;
-    align-items: center !important;
-    padding: 8px 0 !important;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
-}
-
-.meta-row:last-child {
-    border-bottom: none !important;
-}
-
-.meta-row dt {
-    color: #ffffff !important;
-    font-weight: 700 !important;
-}
-
-.meta-row dd {
-    color: #e0e0e0 !important;
-    font-weight: 500 !important;
-    text-align: right !important;
-}
-
-/* 2. Hapus warna oranye di semua link sosial media / footer */
-a, 
-.social-links a, 
-.footer-links a, 
-.actions a,
-.links a {
-    color: #BC92CD !important;
-    text-decoration: none !important;
-    transition: 0.3s ease;
-}
-
-a:hover, 
-.social-links a:hover, 
-.footer-links a:hover, 
-.actions a:hover {
-    color: #ffffff !important;
-    text-shadow: 0 0 10px rgba(188, 146, 205, 0.8);
-}
-/* =========================================
-   BINGKAI KRISTAL BIRU ALA PINTEREST
-   ========================================= */
-
-/* 1. Ubah wadah foto jadi lingkaran */
-.photo-block {
-    background: transparent !important;
-    border: none !important;
-    box-shadow: none !important;
-    display: flex !important;
-    justify-content: center !important;
-    align-items: center !important;
-}
-
-.photo-block::before {
-    display: none !important;
-}
-
-/* 2. Potong foto profil jadi bentuk lingkaran bundar */
-.photo-block img, .avatar {
-    width: 220px !important;
-    height: 220px !important;
-    object-fit: cover !important;
-    border-radius: 50% !important;
-    /* Efek kilau kristal biru (Blue Crystal Glow) */
-    border: 4px solid #64ffda !important;
-    box-shadow: 
-        0 0 20px rgba(100, 255, 218, 0.6), 
-        0 0 40px rgba(67, 97, 238, 0.5),
-        inset 0 0 15px rgba(255, 255, 255, 0.5) !important;
-}
-/* =========================================
-   INFINITE TECH SLIDER (SKILLS BERGULIR)
-   ========================================= */
-.tech-slider-container {
-    overflow: hidden;
-    width: 100%;
-    padding: 20px 0;
-    background: rgba(11, 19, 43, 0.4);
-    backdrop-filter: blur(10px);
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    margin: 30px 0;
-    position: relative;
-}
-
-/* Efek pudar di pinggiran kiri-kanan */
-.tech-slider-container::before,
-.tech-slider-container::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    width: 80px;
-    height: 100%;
-    z-index: 2;
-    pointer-events: none;
-}
-.tech-slider-container::before {
-    left: 0;
-    background: linear-gradient(to right, #0F153A, transparent);
-}
-.tech-slider-container::after {
-    right: 0;
-    background: linear-gradient(to left, #0F153A, transparent);
-}
-
-.tech-track {
-    display: flex;
-    width: max-content;
-    animation: scrollTech 20s linear infinite;
-}
-
-.tech-item {
+.skill-badge {
     display: flex;
     align-items: center;
-    gap: 10px;
-    padding: 10px 25px;
-    margin: 0 15px;
-    background: rgba(255, 255, 255, 0.07);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    border-radius: 30px;
-    color: #ffffff;
-    font-weight: 600;
+    gap: 0.75rem;
+    background: rgba(15, 28, 51, 0.75);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(86, 225, 232, 0.2);
+    padding: 0.85rem 1.4rem;
+    border-radius: 12px;
     white-space: nowrap;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    transition: 0.3s ease;
+    transition: all 0.3s ease;
 }
 
-.tech-item:hover {
-    background: rgba(114, 9, 183, 0.4);
-    border-color: #7209b7;
-    box-shadow: 0 0 20px rgba(114, 9, 183, 0.6);
+.skill-badge:hover {
+    border-color: #56E1E8;
+    background: rgba(86, 225, 232, 0.12);
+    box-shadow: 0 0 18px rgba(86, 225, 232, 0.35);
     transform: translateY(-3px);
 }
 
-.tech-icon {
-    font-size: 1.2rem;
+.skill-icon {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
 }
 
-/* Keyframes untuk pergerakan mulus ke samping */
-@keyframes scrollTech {
-    0% {
-        transform: translateX(0);
-    }
-    100% {
-        transform: translateX(-50%);
-    }
-}
-
-.tech-slider-wrapper {
-    max-width: 580px !important; /* Disesuaikan persis dengan lebar kotak NPM di atas */
-    margin: 20px auto !important;
-    padding: 0 !important;
-    box-sizing: border-box !important;
-}
-
-.tech-slider-container {
-    overflow: hidden;
-    width: 100%;
-    padding: 15px 0;
-    background: rgba(11, 19, 43, 0.6);
-    backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    border-radius: 16px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-    position: relative;
-}
-
-.tech-track {
-    display: flex;
-    width: max-content;
-    animation: scrollTech 18s linear infinite;
-}
-
-.tech-item {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 8px 20px;
-    margin: 0 10px;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 30px;
-    color: #ffffff;
-    font-weight: 600;
+.skill-badge span {
+    font-family: 'Space Grotesk', sans-serif;
     font-size: 0.95rem;
-    white-space: nowrap;
-    transition: 0.3s ease;
+    font-weight: 600;
+    color: #f8fafc;
+}
+.experience-section {
+    padding: 4rem 0;
+    border-top: 1px solid var(--line);
 }
 
-.tech-item:hover {
-    background: rgba(114, 9, 183, 0.4);
-    border-color: #7209b7;
-    box-shadow: 0 0 15px rgba(114, 9, 183, 0.6);
-    transform: translateY(-2px);
-}
-
-/* Ukuran logo gambar/svg agar pas */
-.tech-logo {
-    width: 22px;
-    height: 22px;
-    object-fit: contain;
-}
-
-@keyframes scrollTech {
-    0% {
-        transform: translateX(0);
-    }
-    100% {
-        transform: translateX(-50%);
-    }
-}
-/* =========================================
-   UBAH NPM & PROGRAM JADI VERTIKAL (KE BAWAH)
-   ========================================= */
-.meta-row {
-    display: flex !important;
-    flex-direction: column !important; /* Membuat label di atas, isi di bawah */
-    align-items: flex-start !important;
-    padding: 12px 16px !important;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
-}
-
-.meta-row dt {
-    color: #a78bfa !important; /* Diberi warna ungu muda aksen agar kontras sebagai judul */
-    font-size: 0.85rem !important;
-    font-weight: 600 !important;
-    margin-bottom: 4px !important;
+.section-kicker {
+    color: var(--accent-dark);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
 }
 
-.meta-row dd {
-    color: #ffffff !important;
-    font-size: 1.05rem !important;
-    font-weight: 700 !important;
-    text-align: left !important;
-    margin: 0 !important;
-}
-/* =========================================
-   HILANGKAN KOTAK TRANSPARAN & SUSUN VERTIKAL HORIZONTAL
-   ========================================= */
-
-/* Menghilangkan kotak latar belakang transparan */
-.meta-list {
-    background: transparent !important;
-    backdrop-filter: none !important;
-    border: none !important;
-    box-shadow: none !important;
-    padding: 0 !important;
-    display: flex !important;
-    gap: 40px !important; /* Jarak ke samping antara NPM dan Program */
+.experience-section h1 {
+    margin: 0.4rem 0 1.5rem;
+    font-size: 2rem;
 }
 
-/* Mengatur posisi NPM dan Program agar tetap sejajar horizontal */
-.meta-row {
-    display: flex !important;
-    flex-direction: column !important; /* Label di atas, isi di bawah secara vertikal */
-    align-items: flex-start !important;
-    background: transparent !important;
-    border: none !important;
-    padding: 0 !important;
+.experience-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1rem;
 }
 
-/* Styling untuk Label (NPM / Program) */
-.meta-row dt {
-    color: #a78bfa !important;
-    font-size: 0.8rem !important;
-    font-weight: 600 !important;
-    margin-bottom: 2px !important;
+.experience-card {
+    padding: 1.25rem;
+    background-color: #fff;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+}
+
+.experience-category {
+    color: var(--accent-dark);
+    font-size: 0.75rem;
+    font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
 }
 
-/* Styling untuk Isinya (Nomor NPM / S1 Ilmu Komputer) */
-.meta-row dd {
-    color: #ffffff !important;
-    font-size: 1.1rem !important;
-    font-weight: 700 !important;
-    text-align: left !important;
-    margin: 0 !important;
-}
-/* =========================================
-   UBAH SEMUA FONT JADI GAYA PIXEL / RETRO
-   ========================================= */
-body, * {
-    font-family: 'Press Start 2P', monospace !important;
-    letter-spacing: -0.5px;
+.experience-card h2 {
+    margin: 0.5rem 0;
+    font-size: 1.25rem;
 }
 
-/* Menyesuaikan ukuran font agar tetap rapi dan tidak terlalu besar karena karateristik font pixel */
-h1 {
-    font-size: 1.4rem !important;
-    line-height: 1.5 !important;
+.experience-description, .empty-state {
+    color: var(--text-muted);
 }
 
-h2, h3 {
-    font-size: 1rem !important;
-}
-
-p, span, a, dt, dd {
-    font-size: 0.7rem !important;
-    line-height: 1.6 !important;
-}
-/* =========================================
-   GAYA FONT KHUSUS NAMA UTAMA (GABRIELA STYLE)
-   ========================================= */
-/* =========================================
-   PERBESAR UKURAN FONT NAMA UTAMA
-   ========================================= */
-.hero-details h1 {
-    font-family: 'Cinzel', serif !important;
-    font-size: 2.2rem !important; /* Ukuran diperbesar agar lebih mencolok */
-    font-weight: 700 !important;
-    line-height: 1.2 !important;
-    letter-spacing: 1px !important;
-    text-transform: uppercase;
-    color: #ffffff !important;
-    text-shadow: 0 0 20px rgba(114, 9, 183, 0.8);
-    margin-bottom: 15px !important;
-}
-/* =========================================
-   STYLING TERPISAH: TECHNICAL SKILLS SLIDER
-   ========================================= */
-.tech-slider-wrapper {
-    max-width: 580px !important;
-    margin: 25px auto !important;
-    padding: 0 !important;
-    box-sizing: border-box !important;
-}
-
-.tech-slider-title {
-    text-align: center !important;
-    color: #ffffff !important;
-    margin-bottom: 12px !important;
-    font-size: 1.1rem !important;
-    font-weight: 600 !important;
-}
-
-.tech-slider-container {
-    overflow: hidden;
-    width: 100%;
-    padding: 8px 0;
-    background: rgba(11, 19, 43, 0.6);
-    backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-    position: relative;
-}
-
-.tech-track {
-    display: flex;
-    width: max-content;
-    animation: scrollTech 20s linear infinite;
-}
-
-.tech-item {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 5px 15px;
-    margin: 0 8px;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 20px;
-    color: #ffffff;
-    font-weight: 500;
+.experience-status {
+    margin-top: 1rem;
     font-size: 0.85rem;
-    white-space: nowrap;
-}
-
-.tech-logo {
-    width: 18px;
-    height: 18px;
-    object-fit: contain;
-}
-
-@keyframes scrollTech {
-    0% {
-        transform: translateX(0);
-    }
-    100% {
-        transform: translateX(-50%);
-    }
+    font-weight: 600;
 }
