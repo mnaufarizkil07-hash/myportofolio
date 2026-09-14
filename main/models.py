@@ -25,3 +25,15 @@ class Experience(models.Model):
     @property
     def is_ongoing(self):
         return self.ended_at is None
+    
+
+
+# Tambahkan model ini di bawah model yang sudah ada (misalnya model Experience)
+class Project(models.Model):
+    title = models.CharField(max_length=200)
+    description = models.TextField()
+    date = models.DateField()
+    technology_used = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.title

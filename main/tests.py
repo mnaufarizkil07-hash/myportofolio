@@ -49,3 +49,33 @@ class MainTest(TestCase):
         self.assertFalse(self.experience.is_ongoing)
         self.assertContains(response, "Selesai")
         self.assertNotContains(response, "Sedang berlangsung")
+        
+
+from django.test import TestCase, Client
+from django.urls import reverse
+from .models import Project
+from datetime import date
+
+class ProjectTest(TestCase):
+    # 1. URL dapat diakses dan menggunakan template yang tepat
+    def test_project_url_and_template(self):
+        response = Client().get(reverse('main:project_list'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'project_list.html')
+
+    # 2. Tampilan kondisi ketika data masih kosong
+    def test_project_list_empty_state(self):
+        response = Client().get(reverse('main:project_list'))
+        self.assertContains(response, "Belum ada proyek yang ditambahkan saat ini.")
+
+    # 3. Data model muncul di halaman HTML ketika ada data
+    def test_project_list_shows_data(self):
+        Project.objects.create(
+            title="Web Portofolio",
+            description="Membangun web portofolio dengan Django.",
+            date=date(2026, 9, 14),
+            technology_used="Django, HTML"
+        )
+        response = Client().get(reverse('main:project_list'))
+        self.assertContains(response, "Web Portofolio")
+        self.assertContains(response, "Membangun web portofolio dengan Django.")
