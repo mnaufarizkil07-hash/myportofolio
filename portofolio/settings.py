@@ -150,5 +150,7 @@ MAILERS = {
         'BACKEND': 'django.core.mail.backends.console.EmailBackend',
     },
 }
-
+# Ganti URL ini pakai URL PWS lu nanti kalau udah di-deploy. 
+# Untuk sekarang, kita daftarin localhost buat ngetes di komputer sendiri.
+CSRF_TRUSTED_ORIGINS = ['http://localhost:8000', 'http://127.0.0.1:8000']
 

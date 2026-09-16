@@ -1,35 +1,11 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{name}} — Portfolio</title>
-    
-    <!-- Google Fonts: Space Grotesk & Manrope -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
-    
-    <!-- External CSS -->
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-</head>
-<body>
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
 
     <!-- Background Interactive Canvas (Gelombang & Titik Konstelasi) -->
     <canvas id="wave-canvas"></canvas>
 
-    <!-- Sticky Navigation Bar -->
-    <header class="site-header">
-        <div class="nav-container">
-            <a href="{% url 'main:show_main' %}" class="brand">{{ name }}</a>
-            <nav>
-                <a href="{% url 'main:show_main' %}">Profile</a>
-                <a href="{% url 'main:show_experience' %}">Experience</a>
-                <a href="{% url 'main:project_list' %}">Projects</a>
-            </nav>
-        </div>
-    </header>
+
 
     <!-- Main Container -->
     <main class="main-wrapper">
@@ -471,4 +447,4 @@
 
   drawWaves();
 </script>
-</html>
+{% endblock content %}

@@ -1,30 +1,33 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daftar Proyek</title>
-</head>
-<body>
-    <!-- Navbar sederhana, sesuaikan dengan navbar di index.html kamu -->
-    <nav>
-        <a href="{% url 'main:show_main' %}">Home</a> | 
-        <a href="{% url 'main:show_experience' %}">Experience</a> |
-        <a href="{% url 'main:project_list' %}">Projects</a>
-    </nav>
+{% extends 'base.html' %}
 
+{% block content %}
+
+   
     <h1>Daftar Proyek Portofolio</h1>
+<br>
+<a href="{% url 'main:create_project' %}">
+    <button class="btn btn-primary">Tambah Proyek Baru</button>
+</a>
+<br><br>
 
     <!-- Menampilkan data menggunakan Django Template Language -->
     {% if project_list %}
         <ul>
         {% for project in project_list %}
-            <li>
-                <h3>{{ project.title }}</h3>
-                <p><strong>Tanggal:</strong> {{ project.date }}</p>
-                <p><strong>Teknologi:</strong> {{ project.technology_used }}</p>
-                <p>{{ project.description }}</p>
-            </li>
+<li>
+    <h3>{{ project.title }}</h3>
+    <p><strong>Tanggal:</strong> {{ project.date }}</p>
+    <p><strong>Teknologi:</strong> {{ project.technology_used }}</p>
+    <p>{{ project.description }}</p>
+    
+    <!-- Tombol Hapus -->
+    <form method="POST" action="{% url 'main:delete_project' project.id %}" style="margin-top: 10px;">
+        {% csrf_token %}
+        <button type="submit" style="background-color: #dc3545; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-weight: bold;">
+            Hapus Proyek
+        </button>
+    </form>
+</li>
         {% endfor %}
         </ul>
     {% else %}
@@ -32,8 +35,5 @@
         <p>Belum ada proyek yang ditambahkan saat ini.</p>
     {% endif %}
 
-    <footer>
-        <p>Hak Cipta &copy; 2026</p>
-    </footer>
-</body>
-</html>
+
+{% endblock content %}
