@@ -1,15 +1,23 @@
 from django.urls import path
-from main.views import show_main, show_experience, project_list, create_project, get_projects_json, delete_project # <-- import baru ditambahin
+from . import views
 
-app_name = "main"
+app_name = 'main'
 
 urlpatterns = [
-    path('projects/', project_list, name='project_list'),
-    path('', show_main, name='show_main'),
-    path('experience/', show_experience, name='show_experience'),
-    path('create-project/', create_project, name='create_project'),
+    path('', views.show_main, name='show_main'),
     
-    # URL baru buat JSON dan Delete
-    path('api/projects/', get_projects_json, name='get_projects_json'),
-    path('projects/<uuid:project_id>/delete/', delete_project, name='delete_project'),
+    # Project URLs
+    path('projects/', views.project_list, name='project_list'),
+    path('create-project/', views.create_project, name='create_project'),
+    path('projects/<int:id>/edit/', views.edit_project, name='edit_project'),
+    path('projects/<int:id>/delete/', views.delete_project, name='delete_project'),
+    
+    # Experience URLs (Menggunakan <uuid:id> karena ID model experience berupa UUID)
+    path('experience/', views.show_experience, name='show_experience'),
+    path('experience/add/', views.create_experience, name='create_experience'),
+    path('experience/<uuid:id>/edit/', views.edit_experience, name='edit_experience'),
+    path('experience/<uuid:id>/delete/', views.delete_experience, name='delete_experience'),
+    
+    # JSON / API
+    path('api/projects/', views.get_projects_json, name='get_projects_json'),
 ]

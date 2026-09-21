@@ -1,40 +1,23 @@
-from django.forms import ModelForm, TextInput, Textarea, DateInput
-from main.models import Project
+from django import forms
+from .models import Project, Experience
 
-class ProjectForm(ModelForm):
+class ProjectForm(forms.ModelForm):
     class Meta:
         model = Project
-        # Ini field asli yang ada di models.py lu
-        fields = ["title", "description", "date", "technology_used"]
-        
-        labels = {
-            "title": "Nama Proyek",
-            "description": "Deskripsi Proyek",
-            "date": "Tanggal Proyek",
-            "technology_used": "Teknologi yang Digunakan",
-        }
-        
+        fields = ['title', 'description', 'date', 'technology_used']
         widgets = {
-            "title": TextInput(
-                attrs={
-                    "placeholder": "Contoh: Web Portofolio",
-                    "maxlength": 200,
-                }
-            ),
-            "description": Textarea(
-                attrs={
-                    "placeholder": "Ceritakan proyekmu di sini...",
-                    "rows": 3,
-                }
-            ),
-            "date": DateInput(
-                attrs={
-                    "type": "date", # Biar muncul kalender pas di-klik
-                }
-            ),
-            "technology_used": TextInput(
-                attrs={
-                    "placeholder": "Contoh: Django, Python, HTML",
-                }
-            ),
+            'title': forms.TextInput(attrs={'class': 'form-input', 'placeholder': 'Contoh: Web Portofolio', 'maxlength': 200}),
+            'description': forms.Textarea(attrs={'class': 'form-input', 'placeholder': 'Ceritakan proyekmu di sini...', 'rows': 4}),
+            'date': forms.DateInput(attrs={'class': 'form-input', 'type': 'date'}),
+            'technology_used': forms.TextInput(attrs={'class': 'form-input', 'placeholder': 'Teknologi yang Digunakan'}),
+        }
+
+class ExperienceForm(forms.ModelForm):
+    class Meta:
+        model = Experience
+        fields = ['title', 'category', 'description']
+        widgets = {
+            'title': forms.TextInput(attrs={'class': 'form-input', 'placeholder': 'Contoh: COMPFEST & RISTEK UI'}),
+            'category': forms.Select(attrs={'class': 'form-input'}),
+            'description': forms.Textarea(attrs={'class': 'form-input', 'placeholder': 'Ceritakan pengalamanmu di sini...', 'rows': 4}),
         }

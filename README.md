@@ -37,3 +37,27 @@ Dalam pengerjaan tugas ini, saya menggunakan bantuan AI (Gemini) secara transpar
    - **`makemigrations`**: Berfungsi untuk membaca perubahan pada file `models.py` dan membuat file instruksi (migrasi) yang mencatat perubahan tersebut (ibarat membuat cetak biru pembentukan database).
    - **`migrate`**: Berfungsi untuk mengeksekusi file instruksi migrasi tersebut ke dalam database sungguhan agar tabel atau kolomnya benar-benar terbuat/berubah secara fisik.
    - **Contoh**: Ketika kita membuat class model `Project` baru, atau ketika suatu saat nanti kita ingin menambahkan *field* baru (seperti `image = models.ImageField()`) pada model `Project` yang sudah ada. Kita harus menjalankan kedua perintah tersebut secara berurutan.
+
+
+
+### Tugas 3
+
+**1. Jelaskan mengapa kita menggunakan ModelForm pada Django alih-alih membuat form HTML secara manual. Selain itu, jelaskan pula mengapa kita diwajibkan menambahkan `{% csrf_token %}` pada form tersebut!**
+**Jawaban:** Penggunaan `ModelForm` jauh lebih efisien karena Django secara otomatis membangun form HTML dan menyediakan validasi data berdasarkan *field* yang sudah didefinisikan pada model (*Don't Repeat Yourself*). Ini mengurangi penulisan kode manual yang berulang dan meminimalisir kesalahan. Penambahan `{% csrf_token %}` diwajibkan untuk keamanan, yaitu melindungi aplikasi dari serangan *Cross-Site Request Forgery* (CSRF). Token ini memastikan bahwa *request* POST yang dikirim benar-benar berasal dari form di dalam aplikasi kita, bukan dari situs eksternal yang berniat jahat.
+
+**2. Pada Tutorial 03, kita membahas format data JSON dan XML. Mengapa JSON lebih disukai dalam pengembangan aplikasi web modern dibandingkan XML?**
+**Jawaban:** JSON lebih disukai karena struktur sintaksnya lebih ringkas dan ringan, sehingga ukuran datanya lebih kecil dan lebih cepat ditransfer melalui jaringan. Selain itu, format JSON sangat mirip dengan struktur objek *native* pada JavaScript. Hal ini membuat aplikasi *frontend* modern dapat langsung membaca dan memproses (parsing) JSON dengan sangat mudah dan cepat tanpa memerlukan *parser* tambahan yang kompleks seperti halnya XML.
+
+**3. Jelaskan alur yang terjadi saat kamu menggunakan fungsi view untuk mengembalikan data portofoliomu dalam bentuk JSON. Mengapa kita perlu melakukan proses serialization pada model Django sebelum datanya dikembalikan?**
+**Jawaban:** Alurnya adalah: Client (browser) melakukan *request* ke URL tertentu -> URL mengarahkan ke fungsi *view* -> *View* melakukan *query* ke database menggunakan model (misal: `Project.objects.all()`) dan mendapatkan objek QuerySet Python -> Objek tersebut **diserialisasi** menjadi format JSON -> JSON dikembalikan ke client sebagai `HttpResponse` atau `JsonResponse`.
+Proses *serialization* sangat diperlukan karena protokol HTTP dan web browser tidak mengerti tipe data objek Python (QuerySet). Serialisasi berfungsi menerjemahkan objek Python tersebut menjadi format string/teks terstandarisasi (JSON) agar bisa dikirim lewat jaringan dan dimengerti oleh browser.
+
+---
+
+**AI Disclosure:**
+Dalam pengerjaan tugas ini, saya menggunakan bantuan AI (Gemini) untuk:
+- Membantu *debugging* ketika menemui error `NoReverseMatch` dan `NameError` pada saat mengatur *routing* URL untuk fitur `edit_project` dan `delete_project`.
+- Mendapatkan rekomendasi penulisan CSS Grid dan efek *glassmorphism* untuk menyusun *card* proyek agar sejajar horizontal.
+
+**Keterbatasan AI & Perbaikan Manual:**
+AI memiliki keterbatasan dalam memahami konteks file statis secara keseluruhan. AI sempat memberikan kode pengganti `base.html` yang justru menghilangkan efek *background* gelombang utama bawaan proyek saya. Oleh karena itu, saya melakukan perbaikan manual dengan mengembalikan file `base.html` ke versi asli dan menyesuaikan sendiri struktur *container grid* di `project_list.html` agar *card* proyek tetap transparan tanpa merusak estetika desain animasi *background* awal.

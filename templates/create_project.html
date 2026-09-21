@@ -1,23 +1,210 @@
-{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tambah Proyek Baru — Muhammad Naufal Rizki</title>
+    
+    <!-- Google Fonts: Space Grotesk & Manrope -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    
+    <!-- External CSS -->
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
 
-{% block content %}
-<section class="experience-section">
-    <div class="container">
-        <h1>Add New Projects</h1>
-        <form method="post" action="{% url 'main:create_project' %}" class="project-form">
-            {% csrf_token %}
-            {% for field in form %}
-                <div class="form-group">
-                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-                    {{ field }}
-                    {% for error in field.errors %}
-                        <p class="form-error">{{ error }}</p>
-                    {% endfor %}
+    <!-- Background Interactive Canvas (Gelombang & Titik Konstelasi Konsisten) -->
+    <canvas id="wave-canvas"></canvas>
+
+    <!-- Sticky Navigation Bar yang Konsisten -->
+    <header class="site-header">
+        <div class="nav-container">
+            <a href="{% url 'main:show_main' %}" class="brand">NAUFAL</a>
+            <nav class="nav-links">
+                <a href="{% url 'main:show_main' %}" class="nav-item">Profile</a>
+                <a href="{% url 'main:show_experience' %}" class="nav-item">Experience</a>
+                <a href="{% url 'main:project_list' %}" class="nav-item">Projects</a>
+                <a href="{% url 'main:create_project' %}" class="nav-item btn-contact-nav active">Add Project</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="main-wrapper">
+
+        <!-- Form Section dalam Glassmorphic Card yang Rapi -->
+        <section class="content-section">
+            <div class="contact-card glass-panel" style="max-width: 750px; margin: 0 auto; width: 100%;">
+                <div class="section-header" style="margin-bottom: 1.5rem;">
+                    <h2>Add New Projects</h2>
+                    <p>Tambahkan portofolio proyek terbaru ke dalam sistem database.</p>
                 </div>
-            {% endfor %}
-            <button type="submit" class="button">Tambah Project</button>
-            <a href="{% url 'main:project_list' %}" class="button button-secondary">Batal</a>
-        </form>
-    </div>
-</section>
-{% endblock content %}
+
+                <form method="POST" class="contact-form">
+                    {% csrf_token %}
+                    
+                    <!-- Render Form Django secara rapi atau kustom dengan .form-input -->
+                    <div class="form-group" style="display: flex; flex-direction: column; gap: 0.5rem;">
+                        <label style="font-size: 0.9rem; font-weight: 600; color: #cbd5e1;">Nama Proyek</label>
+                        {{ form.title }}
+                    </div>
+                    
+                    <div class="form-group" style="display: flex; flex-direction: column; gap: 0.5rem;">
+                        <label style="font-size: 0.9rem; font-weight: 600; color: #cbd5e1;">Deskripsi Proyek</label>
+                        {{ form.description }}
+                    </div>
+
+                    <div class="form-group" style="display: flex; flex-direction: column; gap: 0.5rem;">
+                        <label style="font-size: 0.9rem; font-weight: 600; color: #cbd5e1;">Tanggal Proyek</label>
+                        {{ form.date }}
+                    </div>
+
+                    <div class="form-group" style="display: flex; flex-direction: column; gap: 0.5rem;">
+                        <label style="font-size: 0.9rem; font-weight: 600; color: #cbd5e1;">Teknologi yang Digunakan</label>
+                        {{ form.technology }}
+                    </div>
+
+                    <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+                        <button type="submit" class="btn btn-primary" style="flex: 1;">Tambah Project</button>
+                        <a href="{% url 'main:project_list' %}" class="btn btn-secondary" style="text-align: center; display: inline-flex; align-items: center; justify-content: center;">Batal</a>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <p>&copy; 2026 Muhammad Naufal Rizki Fadhlurrahman. Built with Arctic Depths Aesthetic.</p>
+    </footer>
+
+    <!-- Script Background Interaktif (Sama persis) -->
+    <script>
+      const canvas = document.getElementById('wave-canvas');
+      const ctx = canvas.getContext('2d');
+
+      let width, height;
+      const particles = [];
+      let mouse = { x: null, y: null };
+
+      function initCanvas() {
+          width = canvas.width = window.innerWidth;
+          height = canvas.height = window.innerHeight;
+          
+          particles.length = 0;
+          const particleCount = Math.floor((width * height) / 7000);
+          for (let i = 0; i < particleCount; i++) {
+              particles.push({
+                  x: Math.random() * width,
+                  y: Math.random() * height,
+                  vx: (Math.random() - 0.5) * 0.7,
+                  vy: (Math.random() - 0.5) * 0.7,
+                  radius: Math.random() * 2.2 + 1
+              });
+          }
+      }
+
+      window.addEventListener('resize', initCanvas);
+      initCanvas();
+
+      window.addEventListener('mousemove', (e) => {
+          mouse.x = e.clientX;
+          mouse.y = e.clientY;
+      });
+
+      window.addEventListener('mouseleave', () => {
+          mouse.x = null;
+          mouse.y = null;
+      });
+
+      let step = 0;
+      function drawScene() {
+          let gradient = ctx.createLinearGradient(0, 0, width, height);
+          let t = step * 0.02;
+          let r = Math.floor(25 + Math.sin(t) * 15);
+          let g = Math.floor(53 + Math.cos(t) * 15);
+          let b = Math.floor(100 + Math.sin(t) * 60);
+
+          gradient.addColorStop(0, '#122D70');
+          gradient.addColorStop(0.5, `rgb(${r}, ${g}, ${b})`);
+          gradient.addColorStop(1, '#5C58ED');
+
+          ctx.fillStyle = gradient;
+          ctx.fillRect(0, 0, width, height);
+
+          ctx.strokeStyle = 'rgba(86, 225, 232, 0.2)';
+          ctx.fillStyle = 'rgba(86, 225, 232, 0.6)';
+
+          for (let i = 0; i < particles.length; i++) {
+              let p = particles[i];
+              p.x += p.vx;
+              p.y += p.vy;
+
+              if (p.x < 0 || p.x > width) p.vx *= -1;
+              if (p.y < 0 || p.y > height) p.vy *= -1;
+
+              if (mouse.x !== null && mouse.y !== null) {
+                  let mdx = mouse.x - p.x;
+                  let mdy = mouse.y - p.y;
+                  let mdist = Math.sqrt(mdx * mdx + mdy * mdy);
+                  if (mdist < 180) {
+                      p.x += mdx * 0.025;
+                      p.y += mdy * 0.025;
+                  }
+              }
+
+              ctx.beginPath();
+              ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+              ctx.fill();
+
+              for (let j = i + 1; j < particles.length; j++) {
+                  let p2 = particles[j];
+                  let dx = p.x - p2.x;
+                  let dy = p.y - p2.y;
+                  let dist = Math.sqrt(dx * dx + dy * dy);
+
+                  if (dist < 100) {
+                      ctx.beginPath();
+                      ctx.moveTo(p.x, p.y);
+                      ctx.lineTo(p2.x, p2.y);
+                      ctx.lineWidth = 0.6;
+                      ctx.stroke();
+                  }
+              }
+          }
+
+          drawWaveLayer(step, 0.012, 60, 'rgba(63, 169, 245, 0.85)', 3);
+          drawWaveLayer(step + 10, 0.018, 75, 'rgba(86, 225, 232, 0.9)', 2.5);
+          drawWaveLayer(step + 20, 0.015, 65, 'rgba(92, 88, 237, 0.85)', 3);
+          drawWaveLayer(step + 30, 0.008, 90, 'rgba(18, 45, 112, 0.75)', 3.5);
+
+          step += 0.02;
+          requestAnimationFrame(drawScene);
+      }
+
+      function drawWaveLayer(offset, frequency, amplitude, color, lineWidth) {
+          ctx.beginPath();
+          ctx.lineWidth = lineWidth;
+          ctx.strokeStyle = color;
+          ctx.shadowBlur = 12;
+          ctx.shadowColor = color;
+
+          for (let x = 0; x < width; x += 12) {
+              let y = height / 2 + Math.sin(x * frequency + offset) * amplitude + Math.cos(x * 0.004 + offset * 0.4) * 30;
+              if (x === 0) {
+                  ctx.moveTo(x, y);
+              } else {
+                  ctx.lineTo(x, y);
+              }
+          }
+          ctx.stroke();
+      }
+
+      drawScene();
+    </script>
+</body>
+</html>

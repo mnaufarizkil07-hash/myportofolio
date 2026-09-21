@@ -1,79 +1,77 @@
-from django.shortcuts import render
-from main.models import Experience, Project
-from django.shortcuts import render, redirect
-from main.forms import ProjectForm
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from django.core import serializers
-from django.shortcuts import get_object_or_404 
+from .models import Project, Experience
+from .forms import ProjectForm, ExperienceForm
+
 def show_main(request):
     context = {
-        "name": "Muhammad Naufal Rizki Fadhlurrahman",
-        "npm": "2506623490",
-        "study_program": "S1 Sistem Informasi",
-        "bio": (
-            "Mahasiswa Fakultas Ilmu Komputer Universitas Indonesia yang tertarik "
-            "pada bidang cybersecurity (blue team) dan pengembangan back-end AI."
-        ),
+        'nama': 'Muhammad Naufal Rizki Fadhlurrahman',
+        'npm': '2506623490',
+        'study_program': 'S1 Sistem Informasi',
+        'bio': 'Mahasiswa Fakultas Ilmu Komputer Universitas Indonesia yang tertarik pada bidang cybersecurity (blue team) dan pengembangan back-end AI.'
     }
-    return render(request, "index.html", context)
+    return render(request, 'index.html', context)
 
-def show_experience(request):
-    context = {
-        "name": "Muhammad Naufal Rizki Fadhlurrahman",
-        "experience_list": Experience.objects.all(),
-    }
-    return render(request, "experience.html", context)
+# --- PROJECT VIEWS (CRUD & JSON) ---
 
 def project_list(request):
-    # Mengambil data dari fungsi JSON di atas
-    json_response = get_projects_json(request)
-    
-    # Mengubah kembali JSON jadi objek Python (Deserialization)
-    projects = serializers.deserialize(
-        "json",
-        json_response.content.decode("utf-8"),
-    )
-    projects = [project.object for project in projects]
-    title_query = request.GET.get("title", "").strip()
-    
+    projects = Project.objects.all()
     context = {
-        "name": "Naufal", 
-        "project_list": projects,
-        "title_query": title_query,
+        'projects': projects
     }
-    return render(request, "project_list.html", context)
+    return render(request, 'project_list.html', context)
 
 def create_project(request):
-    # Jika pengguna menekan tombol "Submit"
-    if request.method == "POST":
-        form = ProjectForm(request.POST)
-        if form.is_valid():
-            form.save() # Simpan data ke database
-            return redirect('main:project_list') # Balik ke halaman daftar proyek
-    # Jika pengguna baru buka halaman form-nya aja (GET)
-    else:
-        form = ProjectForm()
+    form = ProjectForm(request.POST or None)
+    if form.is_valid():
+        form.save()
+        return redirect('main:project_list')
+    return render(request, 'create_project.html', {'form': form})
 
-    context = {'form': form}
-    return render(request, "create_project.html", context)
+def edit_project(request, id):
+    project = get_object_or_404(Project, pk=id)
+    form = ProjectForm(request.POST or None, instance=project)
+    if form.is_valid():
+        form.save()
+        return redirect('main:project_list')
+    return render(request, 'create_project.html', {'form': form})
+
+def delete_project(request, id):
+    project = get_object_or_404(Project, pk=id)
+    project.delete()
+    return redirect('main:project_list')
 
 def get_projects_json(request):
-    title_query = request.GET.get("title", "").strip()
-    projects = Project.objects.all()
-    
-    # Kalau ada pencarian (filter) by title
-    if title_query:
-        projects = projects.filter(title__icontains=title_query)
-        
-    projects_json = serializers.serialize("json", projects)
-    return HttpResponse(projects_json, content_type="application/json")
+    data = Project.objects.all()
+    return HttpResponse(serializers.serialize("json", data), content_type="application/json")
 
-def delete_project(request, project_id):
-    project = get_object_or_404(Project, pk=project_id)
-    
-    if request.method == "POST":
-        project.delete()
-        messages.success(request, "Project berhasil dihapus!")
-        return redirect("main:project_list")
-        
-    return redirect("main:project_list")
+
+# --- EXPERIENCE VIEWS (CRUD LENGKAP) ---
+
+def show_experience(request):
+    experiences = Experience.objects.all()
+    context = {
+        'experiences': experiences
+    }
+    return render(request, 'experience.html', context)
+
+def create_experience(request):
+    form = ExperienceForm(request.POST or None)
+    if form.is_valid():
+        form.save()
+        return redirect('main:show_experience')
+    return render(request, 'create_experience.html', {'form': form})
+
+def edit_experience(request, id):
+    experience = get_object_or_404(Experience, pk=id)
+    form = ExperienceForm(request.POST or None, instance=experience)
+    if form.is_valid():
+        form.save()
+        return redirect('main:show_experience')
+    return render(request, 'create_experience.html', {'form': form})
+
+def delete_experience(request, id):
+    experience = get_object_or_404(Experience, pk=id)
+    experience.delete()
+    return redirect('main:show_experience')
