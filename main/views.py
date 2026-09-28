@@ -13,6 +13,9 @@ from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
 
+def is_editor_or_superuser(user):
+    return user.is_superuser or user.groups.filter(name='Editor').exists()
+
 def show_main(request):
     context = {
         'nama': 'Muhammad Naufal Rizki Fadhlurrahman',
@@ -32,41 +35,49 @@ def project_list(request):
     }
     return render(request, 'project_list.html', context)
 
-@login_required(login_url='main:login')
+@login_required(login_url='/login/')
 def create_project(request):
-    if request.user.username != 'nr1411': # Ganti dengan username utama kamu
-        raise PermissionDenied
+    if not is_editor_or_superuser(request.user):
+        return HttpResponseForbidden("Anda tidak memiliki izin untuk menambah proyek.")
+    
     form = ProjectForm(request.POST or None)
-    if form.is_valid():
+    if form.is_valid() and request.method == "POST":
         form.save()
-        return redirect('main:project_list')
-    return render(request, 'create_project.html', {'form': form})
+        return redirect('main:show_main')
+    
+    context = {'form': form}
+    return render(request, "create_project.html", context)
 
-@login_required(login_url='main:login')
+@login_required(login_url='/login/')
 def edit_project(request, id):
-    if request.user.username != 'nr1411': # Ganti dengan username utama kamu
-        raise PermissionDenied
+    if not is_editor_or_superuser(request.user):
+        return HttpResponseForbidden("Anda tidak memiliki izin untuk mengubah proyek ini.")
+
     project = get_object_or_404(Project, pk=id)
     form = ProjectForm(request.POST or None, instance=project)
-    if form.is_valid():
+    if form.is_valid() and request.method == "POST":
         form.save()
-        return redirect('main:project_list')
-    return render(request, 'create_project.html', {'form': form})
+        return redirect('main:show_main')
 
-@login_required(login_url='main:login')
+    context = {'form': form, 'project': project}
+    return render(request, "edit_project.html", context)
+
+@login_required(login_url='/login/')
 def delete_project(request, id):
-    if request.user.username != 'nr1411': # Ganti dengan username utama kamu
-        raise PermissionDenied
+    # HANYA Superuser (Pemilik Portofolio) yang boleh menghapus
+    if not request.user.is_superuser:
+        return HttpResponseForbidden("Hanya pemilik portofolio yang dapat menghapus proyek.")
+
     project = get_object_or_404(Project, pk=id)
     project.delete()
-    return redirect('main:project_list')
+    return redirect('main:show_main')
 
 def get_projects_json(request):
     projects = Project.objects.all()
     projects_json = serializers.serialize(
         "json", 
         projects, 
-        use_natural_foreign_keys=True  # Tambahkan baris ini
+        use_natural_foreign_keys=True
     )
     return HttpResponse(projects_json, content_type="application/json")
 

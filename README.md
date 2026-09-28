@@ -61,3 +61,36 @@ Dalam pengerjaan tugas ini, saya menggunakan bantuan AI (Gemini) untuk:
 
 **Keterbatasan AI & Perbaikan Manual:**
 AI memiliki keterbatasan dalam memahami konteks file statis secara keseluruhan. AI sempat memberikan kode pengganti `base.html` yang justru menghilangkan efek *background* gelombang utama bawaan proyek saya. Oleh karena itu, saya melakukan perbaikan manual dengan mengembalikan file `base.html` ke versi asli dan menyesuaikan sendiri struktur *container grid* di `project_list.html` agar *card* proyek tetap transparan tanpa merusak estetika desain animasi *background* awal.
+
+
+---
+
+## 🚀 Individual Assignment 4: Authentication, Authorization & Star Feature
+
+### 📌 Ringkasan Implementasi Tugas 4
+1. **Manajemen Hak Akses & Peran (Authorization):**
+   - Menerapkan pembatasan hak akses di sisi server (*server-side check* menggunakan `HttpResponseForbidden`) serta menyembunyikan tombol kontrol di *template* HTML berdasarkan 4 peran:
+     - **Pengunjung Tanpa Login:** Hanya dapat membaca data.
+     - **Pengguna Biasa:** Dapat membaca data dan memberi/membatalkan *star*.
+     - **Editor (Grup Django Admin):** Memiliki hak pengguna biasa ditambah izin untuk menambah dan mengubah data, tetapi **tidak dapat menghapus** data.
+     - **Pemilik Portofolio / Superuser (`nr1411`):** Memiliki hak akses mutlak penuh (CRUD lengkap).
+2. **Fitur Interaktif Star:**
+   - Menambahkan relasi `ManyToManyField` ke model `User` pada model proyek.
+   - Mengimplementasikan view `toggle_star` dengan metode POST dan proteksi `@login_required`.
+3. **Refinement API JSON:**
+   - Memastikan endpoint JSON proyek menggunakan `use_natural_foreign_keys=True` agar data relasi terekspos secara bersih dan aman.
+
+---
+
+### 🤖 AI Disclosure & Pertanyaan Reflektif (Tugas 4)
+
+#### 1. Transparansi Penggunaan AI (AI Disclosure)
+* **Bagian yang Dibantu AI:** Penulisan fungsi logika otorisasi peran *Editor* (`is_editor_or_superuser`) di `views.py`, pengaturan pengkondisian template HTML untuk tombol CRUD dinamis, serta penyusunan dokumentasi `README.md`.
+* **Strategi Prompting:** Menggunakan pendekatan interaktif bertahap (*step-by-step troubleshooting*), mulai dari konfigurasi *Django Groups* di Admin, validasi relasi `ManyToManyField`, hingga penyelarasan respons API JSON.
+* **Validasi & Perbaikan Manual:** Seluruh kode yang disarankan diuji langsung melalui *local server* Django (`runserver`) dan diverifikasi melalui *Django Admin Dashboard* untuk memastikan tidak ada celah akses ilegal.
+
+#### 2. Pertanyaan Reflektif
+* **Apa tantangan terbesar selama mengimplementasikan autentikasi dan otorisasi pada tugas ini?**  
+  Memastikan bahwa keamanan tidak hanya mengandalkan penyembunyian tombol di sisi tampilan (*front-end*), melainkan wajib divalidasi secara ketat di sisi *back-end* menggunakan `HttpResponseForbidden` agar pengguna iseng tidak bisa bypass lewat URL langsung. Selain itu, membedakan hak khusus *Editor* (bisa ubah tapi dilarang hapus) memerlukan pengecualian *conditional check* yang presisi.
+* **Bagaimana pemahaman Anda mengenai perbedaan peran antara Pengguna Biasa, Editor, dan Superuser setelah menyelesaikan tugas ini?**  
+  Menjadi paham bahwa pembagian peran (*Role-Based Access Control*) sangat krusial dalam pembuatan aplikasi nyata agar tanggung jawab pengelolaan data terstruktur dengan aman sesuai tingkat privilese masing-masing akun.
