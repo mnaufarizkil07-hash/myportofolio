@@ -33,3 +33,8 @@ venv/
 ENV/
 env.bak
 venv.bak
+
+.env*
+db.sqlite3
+env/
+.venv/
