@@ -20,4 +20,9 @@ urlpatterns = [
     
     # JSON / API
     path('api/projects/', views.get_projects_json, name='get_projects_json'),
+    
+    path('register/', views.register, name='register'),
+    path('login/', views.login_user, name='login'),
+    path('logout/', views.logout_user, name='logout'),
+    path('projects/<int:id>/star/', views.toggle_star, name='toggle_star'),
 ]

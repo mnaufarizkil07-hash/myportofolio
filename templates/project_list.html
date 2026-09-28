@@ -20,14 +20,18 @@
     <canvas id="wave-canvas"></canvas>
 
   <!-- Sticky Navigation Bar yang Konsisten -->
-    <header class="site-header">
+    <<header class="site-header">
         <div class="nav-container">
             <a href="{% url 'main:show_main' %}" class="brand">NAUFAL</a>
             <nav class="nav-links">
                 <a href="{% url 'main:show_main' %}" class="nav-item">Profile</a>
                 <a href="{% url 'main:show_experience' %}" class="nav-item">Experience</a>
                 <a href="{% url 'main:project_list' %}" class="nav-item active">Projects</a>
-                <a href="{% url 'main:create_project' %}" class="nav-item btn-contact-nav">Add Project</a>
+                
+                <!-- Bungkus tombol Add Project dengan pengecekan login -->
+                {% if user.is_authenticated and user.username == 'nr1411' %}
+                    <a href="{% url 'main:create_project' %}" class="nav-item btn-contact-nav">Add Project</a>
+                {% endif %}
             </nav>
         </div>
     </header>
@@ -35,47 +39,73 @@
     <main class="main-wrapper">
 
         <!-- Projects Section Header & Content -->
-        <section class="content-section">
-            <div class="section-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
-                <div>
-                    <h2>Daftar Proyek Portofolio</h2>
-                    <p>Kumpulan eksplorasi dan tugas pengembangan aplikasi web.</p>
+       <section class="content-section">
+        <div class="section-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+            <h2>Daftar Proyek Portofolio</h2>
+            <p>Kumpulan eksplorasi dan tugas pengembangan aplikasi web.</p>
+        </div>
+        
+        <!-- Tombol Tambah Proyek dengan Style Utama -->
+        {% if user.is_authenticated and user.username == 'nr1411' %}
+        <a href="{% url 'main:create_project' %}" class="btn btn-primary">+ Tambah Proyek Baru</a>
+        {% endif %}
+
+        <div class="projects-grid" style="margin-top: 1.5rem;">
+            {% for project in projects %}
+            <div class="project-card glass-panel">
+                <div class="project-info">
+    <h3>{{ project.title }}</h3>
+    <p class="project-date" style="font-family: monospace; font-size: 0.8rem; color: #56E1E8;">Tanggal: {{ project.date }}</p>
+    <p class="project-tech" style="font-family: monospace; font-size: 0.8rem; color: #94a3b8;">Teknologi: {{ project.technology }}</p>
+    
+    <!-- Deskripsi ditaruh di sini agar posisinya di atas bintang -->
+    <p style="margin-top: 0.5rem;">{{ project.description }}</p>
+    
+    <div style="margin-top: 1rem; margin-bottom: 1rem; display: flex; align-items: center; gap: 10px;">
+        <span style="font-family: monospace; font-size: 0.9rem; color: #f59e0b;">
+            ⭐ {{ project.stars.count }} Bintang
+        </span>
+        
+        {% if user.is_authenticated %}
+        <form action="{% url 'main:toggle_star' project.id %}" method="POST" style="margin: 0;">
+            {% csrf_token %}
+            <button type="submit" style="padding: 0.3rem 0.8rem; font-size: 0.8rem; border-radius: 4px; border: none; cursor: pointer; background-color: rgba(59, 130, 246, 0.2); color: #60a5fa;">
+                Beri/Tarik Bintang
+            </button>
+        </form>
+        {% endif %}
+    </div>
+
+    {% if user.is_authenticated and user.username == 'nr1411' %}
+    <div class="project-actions" style="display: flex; gap: 0.75rem; margin-top: 1.5rem;">
+        <a href="{% url 'main:edit_project' project.id %}" class="btn btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.85rem; text-decoration: none; color: white; background-color: #6c757d; border-radius: 4px;">Edit</a>
+        <a href="{% url 'main:delete_project' project.id %}" class="btn" style="padding: 0.5rem 1rem; font-size: 0.85rem; background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid #f87171; border-radius: 4px; text-decoration: none;">Delete</a>
+    </div>
+    {% endif %}
+</div>
+                    
                 </div>
-                <!-- Tombol Tambah Proyek dengan Style Utama -->
-                <a href="#" class="btn btn-primary">+ Tambah Proyek Baru</a>
             </div>
-            
-            <div class="projects-grid" style="margin-top: 1.5rem;">
-                {% for project in projects %}
-                <div class="project-card glass-panel">
-                    <div class="project-info">
-                        <h3>{{ project.title }}</h3>
-                        <p class="project-date" style="font-family: monospace; font-size: 0.8rem; color: #56E1E8;">Tanggal: {{ project.date }}</p>
-                        <p class="project-tech" style="font-family: monospace; font-size: 0.8rem; color: #94a3b8;">Teknologi: {{ project.technology }}</p>
-                        <p style="margin-top: 0.5rem;">{{ project.description }}</p>
-                        <div class="project-actions" style="display: flex; gap: 0.75rem; margin-top: 1.5rem;">
-                            <a href="#" class="btn btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.85rem;">Edit</a>
-                            <a href="#" class="btn" style="padding: 0.5rem 1rem; font-size: 0.85rem; background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3);">Hapus</a>
-                        </div>
+            {% empty %}
+            <!-- Fallback Card jika data kosong / mengikuti screenshot kamu -->
+            <div class="project-card glass-panel">
+                <div class="project-info">
+                    <h3>Tugas PBP Web Portofolio</h3>
+                    <p class="project-date" style="font-family: monospace; font-size: 0.8rem; color: #56E1E8;">Tanggal: Sept. 16, 2026</p>
+                    <p class="project-tech" style="font-family: monospace; font-size: 0.8rem; color: #94a3b8;">Teknologi: Python, Django, HTML</p>
+                    <p style="margin-top: 0.5rem;">Uji coba masukin data ke database</p>
+                    
+                    {% if user.is_authenticated and user.username == 'nr1411' %}
+                    <div class="project-actions" style="display: flex; gap: 0.75rem; margin-top: 1.5rem;">
+                        <a href="#" class="btn btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.85rem; text-decoration: none;">Edit</a>
+                        <a href="#" class="btn" style="padding: 0.5rem 1rem; font-size: 0.85rem; background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid #f87171; border-radius: 4px; text-decoration: none;">Delete</a>
                     </div>
+                    {% endif %}
                 </div>
-                {% empty %}
-                <!-- Fallback Card jika data kosong / mengikuti screenshot kamu -->
-                <div class="project-card glass-panel">
-                    <div class="project-info">
-                        <h3>Tugas PBP Web Portofolio</h3>
-                        <p class="project-date" style="font-family: monospace; font-size: 0.8rem; color: #56E1E8;">Tanggal: Sept. 16, 2026</p>
-                        <p class="project-tech" style="font-family: monospace; font-size: 0.8rem; color: #94a3b8;">Teknologi: Python, Django, HTML</p>
-                        <p style="margin-top: 0.5rem;">Uji coba masukin data ke database</p>
-                        <div class="project-actions" style="display: flex; gap: 0.75rem; margin-top: 1.5rem;">
-                            <a href="#" class="btn btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.85rem;">Edit</a>
-                            <a href="#" class="btn" style="padding: 0.5rem 1rem; font-size: 0.85rem; background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3);">Hapus</a>
-                        </div>
-                    </div>
-                </div>
-                {% endfor %}
             </div>
-        </section>
+            {% endfor %}
+        </div>
+    </section>
 
     </main>
 
