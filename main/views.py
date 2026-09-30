@@ -12,19 +12,27 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
+from django.http import JsonResponse
+from django.views.decorators.http import require_ZPOST, require_POST
+from django.http import JsonResponse
+from main.forms import ProjectForm
 
 def is_editor_or_superuser(user):
     return user.is_superuser or user.groups.filter(name='Editor').exists()
 
 def show_main(request):
+    title_query = request.GET.get("title", "").strip()
+    
     context = {
-        'nama': 'Muhammad Naufal Rizki Fadhlurrahman',
+        'nama': 'Muhammad Naufal Rizki Fadhilurrahman',
         'npm': '2506623490',
         'study_program': 'S1 Sistem Informasi',
-        'bio': 'Mahasiswa Fakultas Ilmu Komputer Universitas Indonesia yang tertarik pada bidang cybersecurity (blue team) dan pengembangan back-end AI.',
+        'bio': 'Mahasiswa Fakultas Ilmu Komputer Universitas Indonesia',
         'last_login': request.COOKIES.get('last_login'),
+        'title_query': title_query,
+        'form': ProjectForm(),
     }
-    return render(request, 'index.html', context)
+    return render(request, 'project_list.html', context)
 
 # --- PROJECT VIEWS (CRUD & JSON) ---
 
@@ -71,15 +79,35 @@ def delete_project(request, id):
     project = get_object_or_404(Project, pk=id)
     project.delete()
     return redirect('main:show_main')
-
 def get_projects_json(request):
-    projects = Project.objects.all()
-    projects_json = serializers.serialize(
-        "json", 
-        projects, 
-        use_natural_foreign_keys=True
-    )
-    return HttpResponse(projects_json, content_type="application/json")
+    title_query = request.GET.get("title", "").strip()
+    projects = Project.objects.prefetch_related('starred_by').all()
+    
+    if title_query:
+        projects = projects.filter(title__icontains=title_query)
+        
+    # Konstruksi data JSON secara manual agar bisa menyisipkan logika Star
+    data = []
+    for project in projects:
+        starred_users = project.starred_by.all()
+        is_starred = request.user in starred_users if request.user.is_authenticated else False
+        starred_by_names = ", ".join([u.username for u in starred_users])
+        
+        data.append({
+            "pk": str(project.id),
+            "fields": {
+                "title": project.title,
+                "description": project.description,
+                "tech_stack": project.tech_stack,
+                "project_url": project.project_url,
+                "project_image_url": project.project_image_url,
+                "star_count": starred_users.count(),
+                "is_starred": is_starred,
+                "starred_by_names": starred_by_names,
+            }
+        })
+        
+    return JsonResponse(data, safe=False)
 
 
 # --- EXPERIENCE VIEWS (CRUD LENGKAP) ---
@@ -157,3 +185,21 @@ def toggle_star(request, id):
         
     # Kembalikan user ke halaman utama setelah klik
     return redirect('main:show_main')
+
+@require_POST
+def create_project_ajax(request):
+    if not request.user.is_superuser:
+        return JsonResponse(
+            {"message": "Hanya pemilik portofolio yang dapat menambahkan proyek."},
+            status=403
+        )
+    
+    form = ProjectForm(request.POST)
+    if form.is_valid():
+        project = form.save()
+        return JsonResponse({
+            "message": "Proyek berhasil ditambahkan.",
+            "pk": str(project.id)
+        }, status=201)
+    
+    return JsonResponse({"errors": form.errors.get_json_data()}, status=400)
