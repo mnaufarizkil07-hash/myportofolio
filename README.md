@@ -94,3 +94,47 @@ AI memiliki keterbatasan dalam memahami konteks file statis secara keseluruhan. 
   Memastikan bahwa keamanan tidak hanya mengandalkan penyembunyian tombol di sisi tampilan (*front-end*), melainkan wajib divalidasi secara ketat di sisi *back-end* menggunakan `HttpResponseForbidden` agar pengguna iseng tidak bisa bypass lewat URL langsung. Selain itu, membedakan hak khusus *Editor* (bisa ubah tapi dilarang hapus) memerlukan pengecualian *conditional check* yang presisi.
 * **Bagaimana pemahaman Anda mengenai perbedaan peran antara Pengguna Biasa, Editor, dan Superuser setelah menyelesaikan tugas ini?**  
   Menjadi paham bahwa pembagian peran (*Role-Based Access Control*) sangat krusial dalam pembuatan aplikasi nyata agar tanggung jawab pengelolaan data terstruktur dengan aman sesuai tingkat privilese masing-masing akun.
+
+  # My Portofolio - Tugas 5 PBP
+
+## Deskripsi Proyek
+Aplikasi web portofolio pribadi yang dikembangkan untuk memenuhi Tugas Pemrograman Berbasis Platform (PBP). Pada Tugas 5 ini, aplikasi ditingkatkan dengan mengimplementasikan fungsionalitas asinkron menggunakan **AJAX** (GET dan POST), form modal interaktif, fitur pencarian/sorting, serta penanganan keamanan data secara asinkron.
+
+---
+
+## 📝 Pertanyaan Reflektif (Tugas 5)
+
+### 1. Jelaskan apa itu debouncing dan mengapa teknik ini penting diterapkan pada fitur pencarian yang menggunakan AJAX!
+* **Debouncing** adalah sebuah teknik pemrograman yang digunakan untuk membatasi seberapa sering sebuah fungsi (dalam hal ini fungsi pencarian atau *request* AJAX ke server) dieksekusi dalam rentang waktu tertentu. Teknik ini memastikan bahwa *event handler* tidak langsung berjalan setiap kali pengguna mengetik satu huruf, melainkan menunggu hingga pengguna berhenti mengetik selama jeda waktu tertentu (misalnya 300-500ms).
+* **Mengapa penting?** Jika tanpa *debouncing*, setiap kali pengguna mengetik satu karakter pada kolom pencarian, browser akan langsung mengirimkan *request* HTTP ke server secara bersamaan (*on-every-keystroke*). Hal ini dapat menyebabkan lonjakan beban yang tidak perlu pada server (*server overhead*), potensi *race condition* (respons yang datang tidak berurutan), serta membuat performa aplikasi terasa lambat atau *laggy*. Dengan *debouncing*, *request* ke server menjadi jauh lebih efisien karena hanya dikirimkan saat pengguna selesai mengetik kata kunci yang diinginkan.
+
+---
+
+### 2. Jelaskan fungsi dari penggunaan await ketika kita menggunakan fetch()! Apa yang akan terjadi jika kita tidak menggunakan await?
+* **Fungsi `await`**: Perintah `await` digunakan di dalam fungsi `async` JavaScript untuk menunggu hingga sebuah *Promise* diselesaikan (*resolved*) atau dikembalikan sebelum mengeksekusi baris kode berikutnya. Pada pemanggilan `fetch()`, `await` memastikan bahwa program menunggu proses pengambilan data jaringan selesai dan objek respons berhasil diterima sebelum kita mencoba menguraikannya (misalnya menjadi format `.json()`).
+* **Apa yang terjadi jika tidak menggunakan `await`?** Jika kita tidak menggunakan `await` (dan tidak menangani *Promise* dengan `.then()`), JavaScript akan langsung mengeksekusi baris kode berikutnya secara asinkron sebelum data dari server benar-benar tiba. Akibatnya, variabel yang menampung hasil `fetch()` bukanlah data JSON yang kita inginkan, melainkan sebuah objek *Pending Promise*, yang akan menyebabkan *error* saat kita mencoba mengakses atau merender data tersebut di antarmuka web.
+
+---
+
+### 3. Jelaskan apa itu serangan XSS (Cross-Site Scripting) dan mengapa data yang ditampilkan melalui AJAX/JS lebih rentan daripada data yang ditampilkan langsung melalui template Django!
+* **Serangan XSS (Cross-Site Scripting)** adalah jenis kerentanan keamanan di mana penyerang berhasil menyisipkan skrip berbahaya (biasanya berupa kode JavaScript/HTML) ke dalam situs web yang nantinya akan dieksekusi oleh peramban pengguna lain yang mengunjungi situs tersebut.
+* **Mengapa AJAX/JS lebih rentan?** 
+  * Ketika menggunakan **template HTML Django standar**, Django secara otomatis melakukan *auto-escaping* pada variabel yang dirender di server, sehingga karakter khusus seperti `<script>` akan dinetralkan menjadi teks biasa yang aman.
+  * Sebaliknya, ketika menggunakan **AJAX dan JavaScript**, data JSON yang diterima dari server seringkali langsung disuntikkan ke dalam DOM menggunakan properti seperti `innerHTML` atau dimanipulasi secara manual di sisi klien. Jika data dari *input* pengguna tidak dibersihkan (*sanitize*) atau lolos dari validasi, skrip berbahaya yang dikirimkan oleh penyerang dapat tereksekusi secara langsung di browser pengguna lain, mencuri *cookie*, atau membajak sesi login. Oleh karena itu, diperlukan sanitasi tambahan (seperti escape HTML atau penggunaan `DOMPurify` / `strip_tags`) pada data yang masuk maupun keluar.
+
+---
+
+## 🚀 Fitur Ekstensi (Opsional / Nilai Tambah)
+* **Fitur Sorting Data Proyek**: Mengimplementasikan opsi pengurutan daftar proyek berdasarkan kriteria tertentu (seperti berdasarkan tanggal terbaru atau abjad judul) untuk meningkatkan kemudahan navigasi pengguna.
+* **Pembersihan Input (Sanitasi)**: Penambahan validasi ketat untuk memastikan tidak ada injeksi skrip berbahaya pada data yang dikirimkan lewat form AJAX.
+
+---
+
+## 🤖 AI Disclosure
+Dalam pengerjaan Tugas 5 ini, pemanfaatan AI (Gemini) digunakan secara transparan dengan cakupan sebagai berikut:
+* **Bagian yang dibantu oleh AI**: 
+  * Diskusi konseptual terkait perbedaan alur *asynchronous* dan *synchronous*.
+  * Membantu proses *debugging* pesan *error* pada penyesuaian atribut model Django (`technology_used` dan relasi *many-to-many*).
+  * Memberikan referensi struktur penulisan kode JavaScript untuk *fetch* API dan penanganan *event listener* modal.
+* **Strategi Prompting**: Menggunakan *error-driven prompting* (menyertakan log error terminal dan cuplikan kode aktual) untuk mendapatkan solusi perbaikan bug secara spesifik dan terarah.
+* **Verifikasi Manual**: Seluruh kode perbaikan, logika tampilan AJAX, serta jawaban pertanyaan reflektif di atas telah dipahami secara mandiri dan diuji secara langsung pada lingkungan lokal (*local development*) sebelum di-*commit* ke repositori Git.
