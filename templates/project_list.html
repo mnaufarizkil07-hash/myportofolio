@@ -203,7 +203,7 @@
 </body>
 <script>
     const BASE_PROJECTS_ENDPOINT = "{% url 'main:get_projects_json' %}";
-    const IS_SUPERUSER = "{{ user.is_authenticated and user.username == 'nr1411' }}" === "True";
+    const IS_SUPERUSER = {% if user.is_authenticated and user.username == 'nr1411' %}true{% else %}false{% endif %};
     let projectsAbortController;
     
     // Debouncing
@@ -229,8 +229,8 @@
         const projectId = item.pk;
         const articleElement = document.createElement('div');
         
-        const deleteUrl = "{% url 'main:delete_project' '00000000-0000-0000-0000-000000000000' %}".replace('00000000-0000-0000-0000-000000000000', projectId);
-        const starUrl = "{% url 'main:toggle_star' '00000000-0000-0000-0000-000000000000' %}".replace('00000000-0000-0000-0000-000000000000', projectId);
+        const deleteUrl = "{% url 'main:delete_project' 0 %}".replace('0', projectId);
+        const starUrl = "{% url 'main:toggle_star' 0 %}".replace('0', projectId);
 
         let adminActions = '';
         if (IS_SUPERUSER) {
@@ -314,7 +314,7 @@
 <script>
     const BASE_PROJECTS_ENDPOINT = "{% url 'main:get_projects_json' %}";
     // Setel cek admin sesuai username lu
-    const IS_ADMIN = "{{ user.is_authenticated and user.username == 'nr1411' }}" === "True";
+    const IS_ADMIN = {% if user.is_authenticated and user.username == 'nr1411' %}true{% else %}false{% endif %};
     let projectsAbortController;
     
     // Debouncing
@@ -340,8 +340,8 @@
         const projectId = item.pk;
         const cardDiv = document.createElement('div');
         
-        const deleteUrl = "{% url 'main:delete_project' '00000000-0000-0000-0000-000000000000' %}".replace('00000000-0000-0000-0000-000000000000', projectId);
-        const starUrl = "{% url 'main:toggle_star' '00000000-0000-0000-0000-000000000000' %}".replace('00000000-0000-0000-0000-000000000000', projectId);
+        const deleteUrl = "{% url 'main:delete_project' 0 %}".replace('0', projectId);
+        const starUrl = "{% url 'main:toggle_star' 0 %}".replace('0', projectId);
 
         let adminActions = '';
         if (IS_ADMIN) {
@@ -427,7 +427,7 @@
         modal.hidePopover();
     }
 }
-const CREATE_PROJECT_ENDPOINT = "{% url 'main:create_project_ajax' %}";
+const CREATE_PROJECT_ENDPOINT = "/add-ajax/";
 const projectForm = document.getElementById('project-form');
 
 // Membaca nilai cookie untuk token CSRF

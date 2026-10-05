@@ -16,7 +16,3 @@ def create_project(request):
         "form": form,
     }
     return render(request, "create_project.html", context)
-
-def logout_user(request):
-    logout(request)
-    return redirect("main:show_main")

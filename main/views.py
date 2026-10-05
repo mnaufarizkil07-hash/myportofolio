@@ -1,21 +1,17 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from django.http import HttpResponse
-from django.core import serializers
-from .models import Project, Experience
-from .forms import ProjectForm, ExperienceForm
+from datetime import datetime
 from django.contrib import messages
 from django.contrib.auth import login, logout
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
-from django.shortcuts import redirect, render
-import datetime
-from django.http import HttpResponseRedirect
-from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
-from django.http import JsonResponse
-from django.views.decorators.http import require_ZPOST, require_POST
-from django.http import JsonResponse
-from main.forms import ProjectForm
+from django.core import serializers
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
+from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse
+from django.views.decorators.http import require_http_methods
+
+from main.models import Project, Experience
+from main.forms import ProjectForm, ExperienceForm
 
 def is_editor_or_superuser(user):
     return user.is_superuser or user.groups.filter(name='Editor').exists()
@@ -81,34 +77,27 @@ def delete_project(request, id):
     return redirect('main:show_main')
 def get_projects_json(request):
     title_query = request.GET.get("title", "").strip()
-    projects = Project.objects.prefetch_related('starred_by').all()
-    
+    projects = Project.objects.all()
+
     if title_query:
         projects = projects.filter(title__icontains=title_query)
-        
-    # Konstruksi data JSON secara manual agar bisa menyisipkan logika Star
+
     data = []
     for project in projects:
-        starred_users = project.starred_by.all()
-        is_starred = request.user in starred_users if request.user.is_authenticated else False
-        starred_by_names = ", ".join([u.username for u in starred_users])
-        
         data.append({
             "pk": str(project.id),
             "fields": {
                 "title": project.title,
                 "description": project.description,
-                "tech_stack": project.tech_stack,
-                "project_url": project.project_url,
-                "project_image_url": project.project_image_url,
-                "star_count": starred_users.count(),
-                "is_starred": is_starred,
-                "starred_by_names": starred_by_names,
+                "date": str(project.date),
+                "technology_used": project.technology_used,
+                "star_count": project.stars.count(),
+                "is_starred": request.user in project.stars.all() if request.user.is_authenticated else False,
+                "starred_by_names": "",
             }
         })
-        
-    return JsonResponse(data, safe=False)
 
+    return JsonResponse(data, safe=False)
 
 # --- EXPERIENCE VIEWS (CRUD LENGKAP) ---
 
@@ -186,7 +175,7 @@ def toggle_star(request, id):
     # Kembalikan user ke halaman utama setelah klik
     return redirect('main:show_main')
 
-@require_POST
+@require_http_methods(["POST"])
 def create_project_ajax(request):
     if not request.user.is_superuser:
         return JsonResponse(
@@ -203,3 +192,18 @@ def create_project_ajax(request):
         }, status=201)
     
     return JsonResponse({"errors": form.errors.get_json_data()}, status=400)
+
+    #
+
+# --- FUNGSI 2: Untuk menerima POST dari Modal via AJAX ---
+@login_required(login_url='/login/') # Pastikan URL login sesuai dengan proyekmu
+@require_http_methods(["POST"]) # Hanya menerima metode POST
+def add_project_ajax(request):
+    form = ProjectForm(request.POST)
+    if form.is_valid():
+        new_project = form.save(commit=False)
+        # new_project.user = request.user # Buka komentar ini jika model Project kamu punya field user
+        new_project.save()
+        return JsonResponse({'message': 'Proyek berhasil ditambahkan!'}, status=201)
+    else:
+        return JsonResponse({'message': 'Data tidak valid', 'errors': form.errors}, status=400)

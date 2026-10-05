@@ -132,5 +132,24 @@
         })
     </script>
     {% include 'components/toast.html' %}
-</body>
+<body>
+    <!-- Navbar / Menu Atas -->
+    <header class="navbar" style="display: flex; justify-content: space-between; align-items: center; padding: 1rem 2rem; background: rgba(0,0,0,0.3);">
+        <div class="nav-brand">
+            <a href="{% url 'main:show_main' %}" style="color: white; font-weight: bold; text-decoration: none;">NAUFAL</a>
+        </div>
+        <nav class="nav-links" style="display: flex; gap: 1.5rem; align-items: center;">
+            <a href="{% url 'main:show_main' %}" style="color: white; text-decoration: none;">Home</a>
+            <a href="{% url 'main:show_main' %}#profile" style="color: white; text-decoration: none;">Profile</a>
+            <a href="{% url 'main:project_list' %}" style="color: white; text-decoration: none;">Projects</a>
+            
+            {% if user.is_authenticated %}
+                <span style="color: #4ade80;">Hi, {{ user.username }}</span>
+                <a href="{% url 'main:logout_user' %}" class="btn-logout" style="color: #ef4444; text-decoration: none;">Logout</a>
+            {% else %}
+                <a href="{% url 'main:login' %}" class="btn-login" style="color: white; text-decoration: none;">Login</a>
+                <a href="{% url 'main:register' %}" class="btn-register" style="color: white; text-decoration: none;">Register</a>
+            {% endif %}
+        </nav>
+    </header>
 </html>
