@@ -1,479 +1,754 @@
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@700;800&display=swap');
+/* ==========================================================
+   1. RESET & VARIABLES (Crimson Ember Theme)
+   ========================================================== */
+:root {
+    --bg-dark: #0a0202; /* Hitam pekat dengan sedikit rona merah */
+    --paper: rgba(30, 5, 5, 0.88); /* Merah sangat tua transparan */
+    --line: rgba(220, 38, 38, 0.2); /* Garis merah transparan */
+    --accent: #dc2626; /* Merah menyala (Crimson) */
+    --accent-cyan: #f59e0b; /* Aksen Amber/Emas */
+    --accent-dark: #b91c1c; /* Merah gelap */
+    --text-main: #f8fafc;
+    --text-muted: #a1a1aa;
+    --radius: 16px;
+}
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-:root {
-    --ink: #1c1917;
-    --paper: #faf6f0;
-    --accent: #d95d39;
-    --accent-dark: #a8442a;
-    --line: #e3d9c9;
-    --text-muted: #6b6459;
-    --radius: 8px;
+html {
+    scroll-behavior: smooth;
 }
 
-body, * {
-    font-family: 'Press Start 2P', monospace !important;
-    letter-spacing: -0.5px;
-}
-
-h1 {
-    font-size: 1.4rem !important;
-    line-height: 1.5 !important;
-}
-
-h2, h3 {
-    font-size: 1rem !important;
-}
-
-p, span, a, dt, dd {
-    font-size: 0.7rem !important;
-    line-height: 1.6 !important;
-}
-
-.container {
-    max-width: 960px;
-    margin: 0 auto;
-    padding: 0 1.5rem;
-}
-
-/* =========================================
-   2. TEMA ARCTIC DEPTHS, GALAXY & GRID BLUEPRINT
-   ========================================= */
 body {
-    background: linear-gradient(135deg, #193546, #065B98, #261598, #7548D2) !important;
-    background-size: 400% 400% !important;
-    animation: dynamicBackgroundShift 10s ease infinite !important;
-    background-attachment: fixed !important;
-    color: #ffffff !important;
-    position: relative;
+    font-family: 'Manrope', sans-serif;
+    background-color: var(--bg-dark);
+    color: var(--text-main);
+    overflow-x: hidden;
     min-height: 100vh;
+    position: relative;
 }
 
-@keyframes dynamicBackgroundShift {
-    0% {
-        background-position: 0% 50%;
-    }
-    50% {
-        background-position: 100% 50%;
-    }
-    100% {
-        background-position: 0% 50%;
-    }
-}
-
-/* Efek Garis-Garis Grid Blueprint yang diminta */
-body::before {
-    content: "";
-    position: fixed;
-    top: 0; 
-    left: 0; 
-    width: 100vw; 
-    height: 100vh;
-    z-index: -2;
-    background-image: 
-        linear-gradient(to right, rgba(13, 184, 211, 0.2) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(13, 184, 211, 0.2) 1px, transparent 1px),
-        radial-gradient(2px 2px at 40px 60px, #ffffff, rgba(0,0,0,0)),
-        radial-gradient(2px 2px at 150px 120px, #ffffff, rgba(0,0,0,0));
-    background-size: 40px 40px, 40px 40px, 350px 350px;
-    background-repeat: repeat;
-    pointer-events: none;
-}
-
-/* Background Canvas Gelombang Hidup */
-#wave-canvas {
-    position: fixed !important;
-    top: 0 !important;
-    left: 0 !important;
-    width: 100vw !important;
-    height: 100vh !important;
-    z-index: -1 !important;
-    pointer-events: none !important;
-    background: transparent !important;
-}
-
-/* =========================================
-   3. HEADER & NAVIGASI TRANSPARAN
-   ========================================= */
-.site-header {
-    background-color: rgba(25, 53, 70, 0.6) !important;
-    backdrop-filter: blur(15px) !important;
-    -webkit-backdrop-filter: blur(15px) !important;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
-}
-
-.site-header .container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1.25rem 1.5rem;
-}
-
-.brand {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: #ffffff !important;
-    text-decoration: none;
-}
-
-.site-header nav {
-    display: flex;
-    gap: 2rem;
-}
-
-.site-header nav a, .site-header a {
-    color: #ffffff !important;
-    text-decoration: none;
-    font-weight: 500;
-}
-
-.site-header nav a:hover {
-    color: #64ffda !important;
-}
-
-/* =========================================
-   4. KONTEN UTAMA (HERO & FOTO)
-   ========================================= */
-.hero {
-    padding: 4rem 0;
-    background: transparent !important;
-}
-
-.hero-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 3rem;
-}
-
-@media (min-width: 768px) {
-    .hero-grid {
-        grid-template-columns: 2fr 1fr;
-        align-items: center;
-    }
-}
-
-.hero-kicker {
-    color: #82d9c9 !important;
-    font-weight: 600;
-    margin-bottom: 0.5rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    font-size: 0.9rem;
-}
-
-.hero-details h1, .hero-identity h1 {
-    font-family: 'Cinzel', serif !important;
-    font-size: 2.2rem !important;
-    font-weight: 700 !important;
-    line-height: 1.2 !important;
-    letter-spacing: 1px !important;
-    text-transform: uppercase;
-    color: #ffffff !important;
-    text-shadow: 0 0 20px rgba(27, 127, 220, 0.8);
-    margin-bottom: 15px !important;
-}
-
-.bio, .hero-details p, .hero-details dd {
-    font-size: 1.15rem;
-    margin-bottom: 2rem;
-    color: #e0e0e0 !important;
-}
-
-/* Bingkai Kristal Foto Profil */
-.photo-block {
-    background: transparent !important;
-    border: none !important;
-    box-shadow: none !important;
-    display: flex !important;
-    justify-content: center !important;
-    align-items: center !important;
-}
-
-.photo-block::before {
+/* Utilitas wajib untuk AJAX state */
+.hide {
     display: none !important;
 }
 
-.photo-block img, .avatar {
-    width: 220px !important;
-    height: 220px !important;
-    object-fit: cover !important;
-    border-radius: 50% !important;
-    border: 4px solid #64ffda !important;
-    box-shadow: 
-        0 0 20px rgba(100, 255, 218, 0.6), 
-        0 0 40px rgba(27, 127, 220, 0.5),
-        inset 0 0 15px rgba(255, 255, 255, 0.5) !important;
+/* Blueprint Grid Overlay (Sekarang dengan rona merah/emas) */
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        linear-gradient(to right, rgba(220, 38, 38, 0.05) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(220, 38, 38, 0.05) 1px, transparent 1px);
+    background-size: 40px 40px;
+    z-index: -1;
+    pointer-events: none;
 }
 
-/* =========================================
-   5. DATA DIRI (NPM & PROGRAM)
-   ========================================= */
-.meta-list {
-    background: transparent !important;
-    backdrop-filter: none !important;
-    border: none !important;
-    box-shadow: none !important;
-    padding: 0 !important;
-    display: flex !important;
-    gap: 40px !important;
-    margin-bottom: 2rem;
+/* Glassmorphism Panel Standard */
+.glass-panel {
+    background: rgba(30, 5, 5, 0.55);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(220, 38, 38, 0.15);
+    border-radius: var(--radius);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
 }
 
-.meta-row {
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: flex-start !important;
-    background: transparent !important;
-    border: none !important;
-    padding: 0 !important;
+/* ==========================================================
+   2. STICKY NAVIGATION BAR
+   ========================================================== */
+.site-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    background: rgba(10, 2, 2, 0.75);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border-bottom: 1px solid rgba(220, 38, 38, 0.1);
+    padding: 1rem 2rem;
 }
 
-.meta-row dt {
-    color: #a78bfa !important;
-    font-size: 0.8rem !important;
-    font-weight: 600 !important;
-    margin-bottom: 2px !important;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.meta-row dd {
-    color: #ffffff !important;
-    font-size: 1.1rem !important;
-    font-weight: 700 !important;
-    text-align: left !important;
-    margin: 0 !important;
-}
-
-/* =========================================
-   6. SOCIAL LINKS
-   ========================================= */
-.social-links {
+.nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
     display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.brand {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: #ffffff;
+    text-decoration: none;
+    letter-spacing: -0.5px;
+    text-transform: uppercase;
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+.nav-item,
+.nav-container a {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #a1a1aa;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.nav-item:hover,
+.nav-item.active,
+.nav-container a:hover {
+    color: #f59e0b; /* Hover warna emas */
+}
+
+.btn-contact-nav {
+    background: rgba(220, 38, 38, 0.1);
+    border: 1px solid rgba(220, 38, 38, 0.3);
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    color: #f59e0b !important;
+    transition: all 0.2s ease;
+}
+
+.btn-contact-nav:hover {
+    background: rgba(220, 38, 38, 0.2);
+    box-shadow: 0 0 12px rgba(220, 38, 38, 0.3);
+}
+
+/* ==========================================================
+   3. MAIN LAYOUT & SECTIONS
+   ========================================================== */
+.main-content {
+    position: relative;
+    z-index: 1;
+    padding-top: 90px;
+    min-height: 100vh;
+}
+
+.main-wrapper {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem 4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 4rem;
+}
+
+.content-section {
+    display: flex;
+    flex-direction: column;
     gap: 1.5rem;
 }
 
-a, 
-.social-links a, 
-.footer-links a, 
-.actions a,
-.links a {
-    color: #BC92CD !important;
-    text-decoration: none !important;
-    transition: 0.3s ease;
+.section-header h2 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(1.8rem, 3vw, 2.4rem);
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: -0.5px;
 }
 
-a:hover, 
-.social-links a:hover, 
-.footer-links a:hover, 
-.actions a:hover {
-    color: #ffffff !important;
-    text-shadow: 0 0 10px rgba(188, 146, 205, 0.8);
+.section-header p {
+    font-size: 1rem;
+    color: var(--text-muted);
 }
 
-/* =========================================
-   7. TECHNICAL SKILLS SLIDER
-   ========================================= */
-.tech-slider-wrapper {
-    max-width: 580px !important;
-    margin: 25px auto !important;
-    padding: 0 !important;
-    box-sizing: border-box !important;
-}
-
-.tech-slider-title {
-    text-align: center !important;
-    color: #ffffff !important;
-    margin-bottom: 12px !important;
-    font-size: 1.1rem !important;
-    font-weight: 600 !important;
-}
-
-.tech-slider-container {
-    overflow: hidden;
-    width: 100%;
-    padding: 8px 0;
-    background: rgba(25, 53, 70, 0.6);
-    backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+/* ==========================================================
+   4. EDITORIAL HERO SECTION (Crimson Style)
+   ========================================================== */
+.editorial-hero-section {
     position: relative;
-}
-
-.tech-track {
-    display: flex;
-    width: max-content;
-    animation: scrollTech 20s linear infinite;
-}
-
-.tech-item {
+    width: 100%;
+    min-height: 80vh;
     display: flex;
     align-items: center;
-    gap: 8px;
-    padding: 5px 15px;
-    margin: 0 8px;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    justify-content: center;
+    overflow: hidden;
+    padding: 4rem 1rem;
+}
+
+.bg-typography {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 0;
+    pointer-events: none;
+    width: 100%;
+    text-align: center;
+}
+
+.bg-typography span {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(5rem, 18vw, 16rem);
+    font-weight: 700;
+    color: rgba(220, 38, 38, 0.05); /* Tipografi merah super transparan */
+    letter-spacing: -2px;
+    line-height: 1;
+    text-transform: uppercase;
+}
+
+.editorial-content-wrapper {
+    position: relative;
+    z-index: 2;
+    max-width: 900px;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 0.8fr 1.2fr;
+    gap: 3rem;
+    align-items: center;
+}
+
+.editorial-image-container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.avatar-editorial-glow {
+    position: absolute;
+    width: 260px;
+    height: 260px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #dc2626, #ea580c);
+    filter: blur(40px);
+    opacity: 0.55;
+}
+
+.editorial-avatar {
+    width: 240px;
+    height: 320px;
+    object-fit: cover;
     border-radius: 20px;
-    color: #ffffff;
-    font-weight: 500;
+    border: 2px solid rgba(245, 158, 11, 0.4);
+    box-shadow: 0 15px 40px rgba(153, 27, 27, 0.6);
+    position: relative;
+    z-index: 2;
+}
+
+.editorial-text-box {
+    padding: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.faculty-tag {
+    font-family: 'Space Grotesk', monospace;
     font-size: 0.85rem;
-    white-space: nowrap;
+    font-weight: 500;
+    color: #f59e0b; /* Tag warna emas */
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
-.tech-logo {
-    width: 18px;
-    height: 18px;
-    object-fit: contain;
+.editorial-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(1.5rem, 2.5vw, 2.2rem);
+    font-weight: 700;
+    color: #ffffff;
+    line-height: 1.2;
 }
 
-@keyframes scrollTech {
+.editorial-bio {
+    font-size: 1rem;
+    color: #a1a1aa;
+    line-height: 1.6;
+}
+
+.meta-grid {
+    display: flex;
+    gap: 2rem;
+    padding: 1rem 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.meta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.meta-label {
+    font-family: monospace;
+    font-size: 0.75rem;
+    color: #a1a1aa;
+    letter-spacing: 0.5px;
+}
+
+.meta-value {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #f59e0b;
+}
+
+.editorial-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 0.5rem;
+    flex-wrap: wrap;
+}
+
+/* ==========================================================
+   5. BUTTONS & LINKS
+   ========================================================== */
+.btn,
+.button {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: all 0.25s ease;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-primary,
+.button {
+    background: linear-gradient(135deg, #b91c1c, #991b1b);
+    color: #ffffff;
+    border: none;
+    box-shadow: 0 4px 15px rgba(220, 38, 38, 0.4);
+}
+
+.btn-primary:hover,
+.button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(220, 38, 38, 0.6);
+}
+
+.btn-secondary,
+.button-secondary {
+    background: transparent;
+    color: #ffffff;
+    border: 1px solid rgba(220, 38, 38, 0.4);
+}
+
+.btn-secondary:hover,
+.button-secondary:hover {
+    background: rgba(220, 38, 38, 0.08);
+    border-color: #f59e0b;
+}
+
+.social-links {
+    display: flex;
+    gap: 1.5rem;
+    margin-top: 0.5rem;
+}
+
+.social-link {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.social-link:hover {
+    color: #f59e0b;
+}
+
+/* ==========================================================
+   6. PROJECTS SECTION
+   ========================================================== */
+.projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.project-card {
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.25s ease, border-color 0.25s ease;
+}
+
+.project-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(220, 38, 38, 0.4);
+}
+
+.project-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.project-info h3 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.3rem;
+    color: #ffffff;
+}
+
+.project-info p {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+}
+
+.project-tech-stack {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-top: 0.5rem;
+}
+
+.project-tech-stack span,
+.tech-badge {
+    font-family: monospace;
+    font-size: 0.75rem;
+    background: rgba(220, 38, 38, 0.1);
+    color: #f59e0b;
+    padding: 0.25rem 0.6rem;
+    border-radius: 6px;
+    width: fit-content;
+}
+
+/* ==========================================================
+   7. EXPERIENCE & EDUCATION
+   ========================================================== */
+.timeline-container {
+    padding: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.timeline-item {
+    position: relative;
+    padding-left: 1.5rem;
+    border-left: 2px solid rgba(220, 38, 38, 0.3);
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.timeline-date {
+    font-family: monospace;
+    font-size: 0.8rem;
+    color: #f59e0b;
+}
+
+.timeline-item h4 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.15rem;
+    color: #ffffff;
+}
+
+.timeline-item p {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+}
+
+.experience-section {
+    padding: 2rem 0;
+}
+
+/* ==========================================================
+   8. DJANGO FORMS SECTION
+   ========================================================== */
+.contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+
+.form-input,
+.form-control,
+.form-group input,
+.form-group textarea,
+.form-group select {
+    width: 100%;
+    background: rgba(30, 5, 5, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 8px;
+    padding: 0.85rem 1rem;
+    font-family: 'Manrope', sans-serif;
+    font-size: 0.95rem;
+    color: #ffffff;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-input:focus,
+.form-control:focus,
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+    border-color: #dc2626;
+    box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.15);
+}
+
+.form-input::placeholder,
+.form-control::placeholder,
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+    color: #71717a;
+}
+
+/* ==========================================================
+   9. TOAST & MODAL COMPONENTS
+   ========================================================== */
+.toast-component {
+    position: fixed;
+    inset: auto 2rem 2rem auto;
+    z-index: 2500;
+    margin: 0;
+    padding: 1rem 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+    display: none;
+    align-items: center;
+    gap: 1rem;
+    transition: all 0.3s ease;
+    background: var(--paper);
+    backdrop-filter: blur(16px);
+    border: 1px solid var(--line);
+    color: #ffffff;
+}
+
+.toast-component:popover-open {
+    display: flex;
+}
+
+.toast-hidden {
+    opacity: 0;
+    transform: translateY(150%);
+    pointer-events: none;
+}
+
+.toast-show {
+    display: flex;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.toast-title {
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 0.15rem;
+    font-family: 'Space Grotesk', sans-serif;
+    color: #f59e0b;
+}
+
+.toast-message {
+    font-size: 0.85rem;
+    color: #a1a1aa;
+}
+
+.project-form-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    max-height: none;
+    margin: 0;
+    padding: 1rem;
+    border: 0;
+    background: transparent;
+    z-index: 2000;
+    align-items: center;
+    justify-content: center;
+}
+
+.project-form-modal:popover-open {
+    display: flex;
+}
+
+.project-form-modal__backdrop {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    padding: 0;
+    background: rgba(10, 2, 2, 0.75);
+    backdrop-filter: blur(4px);
+    cursor: default;
+}
+
+.project-form-modal__content {
+    position: relative;
+    z-index: 1;
+    width: min(100%, 640px);
+    max-height: calc(100vh - 2rem);
+    overflow-y: auto;
+    padding: 2rem;
+    background: rgba(30, 5, 5, 0.92);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
+    color: #ffffff;
+}
+
+.project-form-modal__content h2 {
+    font-family: 'Space Grotesk', sans-serif;
+    margin: 0 2.5rem 1.25rem 0;
+    font-size: 1.5rem;
+}
+
+.project-form-modal__close {
+    position: absolute;
+    top: 1rem;
+    right: 1.25rem;
+    border: 0;
+    padding: 0;
+    background: transparent;
+    color: var(--text-muted);
+    font-size: 1.8rem;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.project-form-modal__close:hover {
+    color: #ffffff;
+}
+
+.project-form-modal__actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+}
+
+/* ==========================================================
+   10. FOOTER & RESPONSIVE BREAKPOINTS
+   ========================================================== */
+.site-footer {
+    text-align: center;
+    padding: 2.5rem 1rem;
+    font-size: 0.85rem;
+    color: #71717a;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    margin-top: 2rem;
+}
+
+@media (max-width: 768px) {
+    .editorial-content-wrapper {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: 2rem;
+    }
+    .editorial-actions {
+        justify-content: center;
+    }
+    .meta-grid {
+        justify-content: center;
+    }
+    .nav-container {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+}
+
+/* ==========================================================
+   11. TECHNICAL SKILLS - GOTHIC MARQUEE (Crimson Ember Motif)
+   ========================================================== */
+.skills-marquee-section {
+    overflow: hidden;
+    width: 100%;
+    padding: 2rem 0;
+}
+
+.marquee-container {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+    /* Efek pudar di ujung kiri dan kanan layar */
+    mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+    -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+    padding: 1rem 0;
+}
+
+.marquee-track {
+    display: flex;
+    flex-direction: row;
+    gap: 1.5rem;
+    width: max-content;
+    animation: scrollMarquee 30s linear infinite;
+}
+
+.marquee-track:hover {
+    animation-play-state: paused;
+}
+
+@keyframes scrollMarquee {
     0% { transform: translateX(0); }
     100% { transform: translateX(-50%); }
 }
 
-/* =========================================
-   8. EXPERIENCE SECTION & KARTU (GLASSMORPHISM)
-   ========================================= */
-.experience-section {
-    padding: 4rem 2rem;
-    background-color: transparent !important;
-    margin-top: 2rem;
-}
-
-.experience-section h2 {
-    text-align: center;
-    margin-bottom: 2rem;
-    color: #ffffff !important;
-}
-
-.card-container {
+/* Motif ala Poster Keempat (Dark Gothic / Royal Blood) */
+.skill-badge {
     display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    /* Background merah darah pekat ke hitam */
+    background: linear-gradient(135deg, rgba(42, 8, 8, 0.9), rgba(10, 2, 2, 0.95)); 
+    backdrop-filter: blur(12px);
+    
+    /* Border ornamen emas ala kerajaan (fokus atas-bawah) */
+    border-left: 1px solid rgba(245, 158, 11, 0.2);
+    border-right: 1px solid rgba(245, 158, 11, 0.2);
+    border-top: 2px solid rgba(245, 158, 11, 0.7);
+    border-bottom: 2px solid rgba(245, 158, 11, 0.7);
+    
+    padding: 0.85rem 1.75rem;
+    border-radius: 4px; /* Sudut agak tajam untuk kesan gothic */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.7), inset 0 0 15px rgba(220, 38, 38, 0.1);
+    white-space: nowrap;
+    transition: all 0.3s ease;
 }
 
-.card {
-    background-color: rgba(255, 255, 255, 0.08) !important;
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2) !important;
-    border-radius: 10px;
-    padding: 25px;
-    width: 100%;
-    max-width: 300px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-    transition: transform 0.3s ease, box-shadow 0.3s ease; 
+.skill-badge:hover {
+    border-color: #f59e0b;
+    background: linear-gradient(135deg, rgba(60, 10, 10, 0.9), rgba(20, 2, 2, 0.95));
+    box-shadow: 0 0 20px rgba(245, 158, 11, 0.4), inset 0 0 15px rgba(245, 158, 11, 0.3);
+    transform: translateY(-4px) scale(1.02);
 }
 
-.card h3 {
-    color: #64ffda !important;
-    margin-top: 0;
-    font-size: 1.2rem;
+/* PENYELAMAT GAMBAR BOCOR */
+.skill-icon {
+    width: 32px !important;  
+    height: 32px !important; 
+    object-fit: contain;
+    filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.2));
 }
 
-.card p {
-    color: #d1d5db !important;
-    line-height: 1.6;
-    font-size: 0.95rem;
-}
-
-.card:hover {
-    transform: translateY(-8px) scale(1.02);
-    box-shadow: 0 12px 20px rgba(0,0,0,0.12);
-}
-
-/* =========================================
-   9. FOOTER
-   ========================================= */
-.site-footer {
-    text-align: center;
-    padding: 2rem 0;
-    color: #a0aec0;
-    font-size: 0.9rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    margin-top: 2rem;
-    background-color: rgba(25, 53, 70, 0.4);
-}
-
-/* Responsivitas Mobile */
-@media screen and (max-width: 768px) {
-    .card-container {
-        flex-direction: column;
-        align-items: center;
-    }
-    .meta-list {
-        flex-direction: column !important;
-        gap: 15px !important;
-    }
-}
-/* Styling font modern untuk Porotfolio & Profile */
-/* Memperbesar ukuran font PORTOFOLIO & Profile */
-.brand, .site-header nav a {
-    font-family: 'Plus Jakarta Sans', sans-serif !important;
-    font-size: 1.25rem !important; /* Ukuran diperbesar */
-    font-weight: 800 !important;
-    letter-spacing: 0.5px !important;
+.skill-badge span {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #f59e0b; /* Warna font emas menyala */
     text-transform: uppercase;
-}
-.project-form {
-    width: 100%;
-    max-width: 100%;
-    margin-top: 1.5rem;
-}
-
-.form-group {
-    margin-bottom: 1.25rem;
-}
-
-.form-group label {
-    display: block;
-    margin-bottom: 0.4rem;
-    font-weight: 700;
-}
-
-.form-group input,
-.form-group textarea {
-    width: 100%;
-    box-sizing: border-box;
-    padding: 0.7rem;
-    border: 1px solid var(--accent, #000); /* Backup color kalau --accent gak ada */
-    border-radius: var(--radius, 8px);
-    font: inherit;
-    transition: border-color 0.2s ease, outline-color 0.2s ease;
-}
-
-.form-group input:focus,
-.form-group textarea:focus {
-    outline: 2px solid var(--accent, #000);
-    border-color: var(--accent, #000);
-}
-
-.form-error {
-    color: #b42318;
-    font-size: 0.85rem;
-    margin-top: 0.35rem;
-}
-
-.button {
-    display: inline-block;
-    height: fit-content;
-    border: 0;
-    border-radius: var(--radius, 8px);
-    padding: 0.65rem 1rem;
-    background: var(--accent, #007bff);
-    color: white;
-    cursor: pointer;
-    font: inherit;
-    font-weight: 700;
-    text-decoration: none;
-}
-
-.button-secondary {
-    background: var(--ink, #333);
+    letter-spacing: 1px;
 }

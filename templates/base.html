@@ -4,152 +4,174 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portfolio - Naufal</title>
-
-    <!-- Google Fonts Manrope -->
+    {% block meta %}
+    <title>Muhammad Naufal Rizki Fadhlurrahman</title>
+    {% endblock meta %}
+    
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&display=swap" rel="stylesheet">
-
-    <!-- Memanggil CSS Asli -->
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    
+    <!-- External CSS -->
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
-
-    <!-- Library Animasi Gelombang Menyala (Vanta.js) -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.waves.min.js"></script>
-
-    <style>
-        body, html {
-            margin: 0;
-            padding: 0;
-            font-family: 'Manrope', sans-serif;
-            color: white;
-            min-height: 100vh;
-        }
-
-        /* Container Animasi Latar Belakang */
-        #bg-animasi {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100vh;
-            z-index: -1; 
-        }
-
-        /* Desain Navbar Glassmorphism */
-        .site-header {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            background: rgba(10, 25, 47, 0.4); /* Transparan */
-            backdrop-filter: blur(15px); /* Efek Kaca */
-            -webkit-backdrop-filter: blur(15px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            z-index: 100;
-            padding: 1.2rem 5%;
-            box-sizing: border-box;
-        }
-
-        .nav-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .nav-container a {
-            color: white;
-            text-decoration: none;
-            font-weight: 500;
-            transition: color 0.3s;
-        }
-
-        .nav-container a:hover {
-            color: #60a5fa;
-        }
-
-        /* Area Konten Utama */
-        .main-content {
-            position: relative;
-            z-index: 1;
-            padding-top: 100px; /* Jarak agar konten tidak nabrak navbar */
-            min-height: 100vh;
-            box-sizing: border-box;
-        }
-    </style>
 </head>
 <body>
-    <!-- Canvas Gelombang Bergerak -->
-    <div id="bg-animasi"></div>
 
-    <!-- Navbar -->
+    <!-- STICKY NAVBAR -->
     <header class="site-header">
         <div class="nav-container">
-            <a href="{% url 'main:show_main' %}" style="font-weight: 800; font-size: 1.2rem; letter-spacing: 1px;">NAUFAL</a>
-            <nav style="display: flex; gap: 2rem; align-items: center;">
-    <a href="{% url 'main:show_main' %}">Profile</a>
-    <a href="#">Experience</a>
-    <a href="{% url 'main:project_list' %}">Projects</a>
-    
-    <!-- Tambahan logika autentikasi -->
-    {% if user.is_authenticated %}
-        <span style="font-weight: bold;">Halo, {{ user.username }}!</span>
-        <a href="{% url 'main:logout' %}">Logout</a>
-    {% else %}
-        <a href="{% url 'main:login' %}">Login</a>
-        <a href="{% url 'main:register' %}">Register</a>
-    {% endif %}
-</nav>
+            <a href="{% url 'main:show_main' %}" class="brand">NAUFAL</a>
+            <nav class="nav-links">
+                <a href="{% url 'main:show_main' %}">Profile</a>
+                <a href="{% url 'main:show_experience' %}">Experience</a>
+                <a href="{% url 'main:project_list' %}">Projects</a>
+                
+                {% if user.is_authenticated %}
+                    <span style="color: #56E1E8; font-size: 0.9rem; margin-right: 1rem;">Welcome, {{ user.username }}</span>
+                    <a href="{% url 'main:logout_user' %}" class="nav-item">Logout</a>
+                {% else %}
+                    <a href="{% url 'main:login' %}" class="nav-item">Login</a>
+                {% endif %}
+            </nav>
         </div>
     </header>
 
-    <!-- Konten Disuntikkan ke Sini -->
+    <!-- CONTENT INJECTION -->
     <main class="main-content">
         {% block content %}
         {% endblock content %}
     </main>
 
-    <!-- Script Penggerak Animasi Gelombang -->
-    <script>
-        window.addEventListener('DOMContentLoaded', () => {
-            VANTA.WAVES({
-                el: "#bg-animasi",
-                mouseControls: true,
-                touchControls: true,
-                gyroControls: false,
-                minHeight: 200.00,
-                minWidth: 200.00,
-                scale: 1.00,
-                scaleMobile: 1.00,
-                color: 0x1d4ed8,      /* Warna gelombang biru neon */
-                shininess: 45.00,
-                waveHeight: 20.00,
-                waveSpeed: 0.85,
-                zoom: 0.85
-            })
-        })
-    </script>
+    <!-- TOAST COMPONENT INJECTION -->
     {% include 'components/toast.html' %}
-<body>
-    <!-- Navbar / Menu Atas -->
-    <header class="navbar" style="display: flex; justify-content: space-between; align-items: center; padding: 1rem 2rem; background: rgba(0,0,0,0.3);">
-        <div class="nav-brand">
-            <a href="{% url 'main:show_main' %}" style="color: white; font-weight: bold; text-decoration: none;">NAUFAL</a>
-        </div>
-        <nav class="nav-links" style="display: flex; gap: 1.5rem; align-items: center;">
-            <a href="{% url 'main:show_main' %}" style="color: white; text-decoration: none;">Home</a>
-            <a href="{% url 'main:show_main' %}#profile" style="color: white; text-decoration: none;">Profile</a>
-            <a href="{% url 'main:project_list' %}" style="color: white; text-decoration: none;">Projects</a>
-            
-            {% if user.is_authenticated %}
-                <span style="color: #4ade80;">Hi, {{ user.username }}</span>
-                <a href="{% url 'main:logout_user' %}" class="btn-logout" style="color: #ef4444; text-decoration: none;">Logout</a>
-            {% else %}
-                <a href="{% url 'main:login' %}" class="btn-login" style="color: white; text-decoration: none;">Login</a>
-                <a href="{% url 'main:register' %}" class="btn-register" style="color: white; text-decoration: none;">Register</a>
-            {% endif %}
-        </nav>
-    </header>
+    <script src="{% static 'js/toast.js' %}"></script>
+
+    <!-- Background Interactive Canvas (Arctic Depths / Gelombang Biru) -->
+    <canvas id="wave-canvas"></canvas>
+
+    <script>
+      const canvas = document.getElementById('wave-canvas');
+      const ctx = canvas.getContext('2d');
+
+      let width, height;
+      const particles = [];
+      let mouse = { x: null, y: null };
+
+      function initCanvas() {
+          width = canvas.width = window.innerWidth;
+          height = canvas.height = window.innerHeight;
+          
+          particles.length = 0;
+          const particleCount = Math.floor((width * height) / 10000);
+          for (let i = 0; i < particleCount; i++) {
+              particles.push({
+                  x: Math.random() * width,
+                  y: Math.random() * height,
+                  vx: (Math.random() - 0.5) * 0.7,
+                  vy: (Math.random() - 0.5) * 0.7,
+                  radius: Math.random() * 2 + 1
+              });
+          }
+      }
+
+      window.addEventListener('resize', initCanvas);
+      initCanvas();
+
+      window.addEventListener('mousemove', (e) => {
+          mouse.x = e.clientX;
+          mouse.y = e.clientY;
+      });
+
+      window.addEventListener('mouseleave', () => {
+          mouse.x = null;
+          mouse.y = null;
+      });
+
+      let step = 0;
+      function drawScene() {
+          // Gradasi Nebula Biru-Ungu
+          let gradient = ctx.createLinearGradient(0, 0, width, height);
+          let t = step * 0.02;
+          let r = Math.floor(25 + Math.sin(t) * 15);
+          let g = Math.floor(53 + Math.cos(t) * 15);
+          let b = Math.floor(100 + Math.sin(t) * 60);
+
+          gradient.addColorStop(0, '#122D70');
+          gradient.addColorStop(0.5, `rgb(${r}, ${g}, ${b})`);
+          gradient.addColorStop(1, '#5C58ED');
+
+          ctx.fillStyle = gradient;
+          ctx.fillRect(0, 0, width, height);
+
+          // Render Konstelasi Titik & Garis
+          ctx.strokeStyle = 'rgba(86, 225, 232, 0.2)';
+          ctx.fillStyle = 'rgba(86, 225, 232, 0.6)';
+
+          for (let i = 0; i < particles.length; i++) {
+              let p = particles[i];
+              p.x += p.vx;
+              p.y += p.vy;
+
+              if (p.x < 0 || p.x > width) p.vx *= -1;
+              if (p.y < 0 || p.y > height) p.vy *= -1;
+
+              if (mouse.x !== null && mouse.y !== null) {
+                  let mdx = mouse.x - p.x;
+                  let mdy = mouse.y - p.y;
+                  let mdist = Math.sqrt(mdx * mdx + mdy * mdy);
+                  if (mdist < 180) {
+                      p.x += mdx * 0.025;
+                      p.y += mdy * 0.025;
+                  }
+              }
+
+              ctx.beginPath();
+              ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+              ctx.fill();
+
+              for (let j = i + 1; j < particles.length; j++) {
+                  let p2 = particles[j];
+                  let dx = p.x - p2.x;
+                  let dy = p.y - p2.y;
+                  let dist = Math.sqrt(dx * dx + dy * dy);
+
+                  if (dist < 100) {
+                      ctx.beginPath();
+                      ctx.moveTo(p.x, p.y);
+                      ctx.lineTo(p2.x, p2.y);
+                      ctx.lineWidth = 0.6;
+                      ctx.stroke();
+                  }
+              }
+          }
+
+          // 4 Layer Gelombang Neon
+          drawWaveLayer(step, 0.012, 60, 'rgba(63, 169, 245, 0.85)', 3);
+          drawWaveLayer(step + 10, 0.018, 75, 'rgba(86, 225, 232, 0.9)', 2.5);
+          drawWaveLayer(step + 20, 0.015, 65, 'rgba(92, 88, 237, 0.85)', 3);
+          drawWaveLayer(step + 30, 0.008, 90, 'rgba(18, 45, 112, 0.75)', 3.5);
+
+          step += 0.02;
+          requestAnimationFrame(drawScene);
+      }
+
+      function drawWaveLayer(offset, frequency, amplitude, color, lineWidth) {
+          ctx.beginPath();
+          ctx.lineWidth = lineWidth;
+          ctx.strokeStyle = color;
+          ctx.shadowBlur = 12;
+          ctx.shadowColor = color;
+
+          for (let x = 0; x < width; x += 12) {
+              let y = height / 2 + Math.sin(x * frequency + offset) * amplitude + Math.cos(x * 0.004 + offset * 0.4) * 30;
+              if (x === 0) ctx.moveTo(x, y);
+              else ctx.lineTo(x, y);
+          }
+          ctx.stroke();
+      }
+
+      drawScene();
+    </script>
+</body>
 </html>

@@ -1,33 +1,57 @@
 {% extends "base.html" %}
+
 {% block meta %}
-<title>Register - {{ name }}</title>
+<title>Register — Muhammad Naufal Rizki</title>
 {% endblock meta %}
+
 {% block content %}
-<main>
-  <section class="experience-section">
-    <div class="container">
-      <h1>Buat Akun</h1>
-      <form method="post" action="{% url 'main:register' %}" class="project-form">
-        {% csrf_token %}
-        {% for error in form.non_field_errors %}
-        <p class="form-error">{{ error }}</p>
-        {% endfor %}
-        {% for field in form %}
-        <div class="form-group">
-          <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-          {{ field }}
-          {% if field.help_text %}
-          <div class="form-help">{{ field.help_text }}</div>
-          {% endif %}
-          {% for error in field.errors %}
-          <p class="form-error">{{ error }}</p>
-          {% endfor %}
+<section class="content-section" style="display: flex; justify-content: center; align-items: center; min-height: 75vh; padding-top: 2rem; margin-bottom: 4rem;">
+    <!-- Glassmorphic Card untuk Register -->
+    <div class="contact-card glass-panel" style="width: 100%; max-width: 500px; padding: 2.5rem; border-radius: 16px;">
+        <div class="section-header" style="margin-bottom: 2rem; text-align: center;">
+            <h2 style="font-family: 'Space Grotesk', sans-serif; font-size: 2rem; margin-bottom: 0.5rem;">Buat Akun</h2>
+            <p style="color: #94a3b8;">Daftarkan diri Anda untuk mengakses fitur penuh.</p>
         </div>
-        {% endfor %}
-        <button type="submit" class="button">Daftar</button>
-      </form>
-      <p>Sudah punya akun? <a href="{% url 'main:login' %}">Login di sini</a>.</p>
+
+        <form method="POST" action="{% url 'main:register' %}" class="contact-form">
+            {% csrf_token %}
+            
+            <!-- Error Umum Form -->
+            {% if form.non_field_errors %}
+            <div style="margin-bottom: 1.25rem;">
+                {% for error in form.non_field_errors %}
+                <p style="padding: 10px; border-radius: 8px; font-size: 0.9rem; text-align: center; background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3);">
+                    {{ error }}
+                </p>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            {% for field in form %}
+            <div class="form-group" style="display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1.25rem;">
+                <label for="{{ field.id_for_label }}" style="font-size: 0.9rem; font-weight: 600; color: #cbd5e1;">{{ field.label }}</label>
+                
+                <!-- Field Input Otomatis -->
+                {{ field }}
+                
+                <!-- Teks Bantuan Syarat Password Django -->
+                {% if field.help_text %}
+                <p style="font-size: 0.75rem; color: #94a3b8; margin-top: 0.2rem; margin-bottom: 0; line-height: 1.4;">{{ field.help_text }}</p>
+                {% endif %}
+                
+                <!-- Error Spesifik per Kolom -->
+                {% for error in field.errors %}
+                <p style="color: #f87171; font-size: 0.8rem; margin-top: 0.2rem; margin-bottom: 0;">{{ error }}</p>
+                {% endfor %}
+            </div>
+            {% endfor %}
+
+            <button type="submit" class="btn btn-primary" style="width: 100%; padding: 12px; margin-top: 1rem; border-radius: 8px; font-weight: bold; background: linear-gradient(135deg, #6366f1, #3b82f6); color: white; border: none; cursor: pointer;">Daftar Akun</button>
+        </form>
+
+        <p style="text-align: center; margin-top: 1.5rem; color: #94a3b8; font-size: 0.9rem;">
+            Sudah punya akun? <a href="{% url 'main:login' %}" style="color: #38bdf8; text-decoration: none; font-weight: 600;">Login di sini</a>.
+        </p>
     </div>
-  </section>
-</main>
+</section>
 {% endblock content %}

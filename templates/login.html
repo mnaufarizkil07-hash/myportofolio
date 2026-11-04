@@ -1,37 +1,61 @@
 {% extends "base.html" %}
+
 {% block meta %}
-<title>Login - {{ name }}</title>
+<title>Login — Muhammad Naufal Rizki</title>
 {% endblock meta %}
+
 {% block content %}
-<main>
-  <section class="experience-section">
-    <div class="container">
-      <h1>Login</h1>
-      {% for message in messages %}
-      <p class="form-message">{{ message }}</p>
-      {% endfor %}
-      <form method="post" action="{% url 'main:login' %}" class="project-form">
-        {% csrf_token %}
-        {% for field in form %}
-        <div class="form-group">
-          <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-          {{ field }}
-          {% for error in field.errors %}
-          <p class="form-error">{{ error }}</p>
-          {% endfor %}
+<section class="content-section" style="display: flex; justify-content: center; align-items: center; min-height: 75vh; padding-top: 2rem;">
+    <!-- Glassmorphic Card untuk Login -->
+    <div class="contact-card glass-panel" style="width: 100%; max-width: 450px; padding: 2.5rem; border-radius: 16px;">
+        <div class="section-header" style="margin-bottom: 2rem; text-align: center;">
+            <h2 style="font-family: 'Space Grotesk', sans-serif; font-size: 2rem; margin-bottom: 0.5rem;">Welcome Back</h2>
+            <p style="color: #94a3b8;">Silakan login untuk masuk ke dasbor.</p>
         </div>
-        {% endfor %}
-        {% if form.non_field_errors %}
-        <div class="form-error">
-          {% for error in form.non_field_errors %}
-          <p>{{ error }}</p>
-          {% endfor %}
-        </div>
+
+        <!-- Pesan Notifikasi (Dari Django Messages) -->
+        {% if messages %}
+            <div style="margin-bottom: 1.5rem;">
+                {% for message in messages %}
+                    <p style="padding: 10px; border-radius: 8px; font-size: 0.9rem; text-align: center; background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3);">
+                        {{ message }}
+                    </p>
+                {% endfor %}
+            </div>
         {% endif %}
-        <button type="submit" class="button">Login</button>
-      </form>
-      <p>Belum punya akun? <a href="{% url 'main:register' %}">Daftar di sini</a>.</p>
+
+        <form method="POST" action="{% url 'main:login' %}" class="contact-form">
+            {% csrf_token %}
+            
+            {% for field in form %}
+            <div class="form-group" style="display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1.25rem;">
+                <label for="{{ field.id_for_label }}" style="font-size: 0.9rem; font-weight: 600; color: #cbd5e1;">{{ field.label }}</label>
+                
+                <!-- Field input otomatis ter-style dari CSS .form-group input di style.css -->
+                {{ field }}
+                
+                <!-- Error Spesifik per Kolom -->
+                {% for error in field.errors %}
+                <p style="color: #f87171; font-size: 0.8rem; margin-top: 0.2rem; margin-bottom: 0;">{{ error }}</p>
+                {% endfor %}
+            </div>
+            {% endfor %}
+
+            <!-- Error Umum Form -->
+            {% if form.non_field_errors %}
+            <div style="margin-bottom: 1.25rem;">
+                {% for error in form.non_field_errors %}
+                <p style="color: #f87171; font-size: 0.85rem; text-align: center;">{{ error }}</p>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            <button type="submit" class="btn btn-primary" style="width: 100%; padding: 12px; margin-top: 1rem; border-radius: 8px; font-weight: bold; background: linear-gradient(135deg, #6366f1, #3b82f6); color: white; border: none; cursor: pointer;">Login</button>
+        </form>
+
+        <p style="text-align: center; margin-top: 1.5rem; color: #94a3b8; font-size: 0.9rem;">
+            Belum punya akun? <a href="{% url 'main:register' %}" style="color: #38bdf8; text-decoration: none; font-weight: 600;">Daftar di sini</a>.
+        </p>
     </div>
-  </section>
-</main>
+</section>
 {% endblock content %}
